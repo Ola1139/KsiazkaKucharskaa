@@ -72,7 +72,7 @@ class Przepisy
     private $kategoria;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Skladniki", inversedBy="przepisy")
+     * @ORM\OneToMany(targetEntity="App\Entity\PrzepisySkladniki", mappedBy="Przepis", fetch="EXTRA_LAZY")
      */
     private $id_skladnik;
 
@@ -128,7 +128,7 @@ class Przepisy
     }
 
     /**
-     * Setter for idAutor
+     * Setter for IdAutor
      * @param Uzytkownicy|null $id_autor IdAutor
      * @return Przepisy
      */
@@ -369,4 +369,6 @@ class Przepisy
 
         return $this;
     }
+
+
 }

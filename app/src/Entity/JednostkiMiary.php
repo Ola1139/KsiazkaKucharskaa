@@ -30,6 +30,12 @@ class JednostkiMiary
     private $nazwa_jednostki_miary;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\PrzepisySkladniki", inversedBy="JednostkaMiary")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $JednostkaMiary;
+
+    /**
      * Getter for Id
      *
      * @return int|null Id
@@ -58,6 +64,18 @@ class JednostkiMiary
     public function setNazwaJednostkiMiary(string $nazwa_jednostki_miary): self
     {
         $this->nazwa_jednostki_miary = $nazwa_jednostki_miary;
+
+        return $this;
+    }
+
+    public function getJednostkaMiary(): ?PrzepisySkladniki
+    {
+        return $this->JednostkaMiary;
+    }
+
+    public function setJednostkaMiary(?PrzepisySkladniki $JednostkaMiary): self
+    {
+        $this->JednostkaMiary = $JednostkaMiary;
 
         return $this;
     }

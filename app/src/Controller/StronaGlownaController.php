@@ -54,6 +54,8 @@ class StronaGlownaController extends AbstractController
      *
      * @param \App\Entity\Przepisy $przepis Przepis entity
      *
+     *
+     *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @Route(
@@ -62,12 +64,21 @@ class StronaGlownaController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function view(Przepisy $przepis): Response
+    public function view(Przepisy $przepisy): Response
     {
+
+        $przepis = $this->getDoctrine()
+            ->getRepository(Przepisy::class)
+            ->find($przepisy);
+
+
+        $autor = $przepis->getIdAutor()->getImie();
+
         return $this->render(
             'przepis/view.html.twig',
-            ['przepis' => $przepis]
+            ['przepis' => $przepis, 'autor' => $autor]
         );
+
     }
 
 }

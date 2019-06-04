@@ -33,7 +33,7 @@ class Skladniki
     private $nazwa;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Przepisy", mappedBy="id_skladnik")
+     * @ORM\OneToMany(targetEntity="App\Entity\PrzepisySkladniki", mappedBy="skladnik", fetch="EXTRA_LAZY")
      */
     private $przepisy;
 

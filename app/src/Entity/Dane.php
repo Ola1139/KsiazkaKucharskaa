@@ -3,14 +3,44 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Dane
  *
  * @ORM\Entity(repositoryClass="App\Repository\DaneRepository")
+ *
+ *
  */
-class Dane
+class Dane implements UserInterface
 {
+    /**
+     * Use constants to define configuration options that rarely change instead
+     * of specifying them in app/config/config.yml.
+     * See http://symfony.com/doc/current/best_practices/configuration.html#constants-vs-configuration-options
+     *
+     * @constant int NUMBER_OF_ITEMS
+     */
+    const NUMBER_OF_ITEMS = 3;
+
+    /**
+     * Konto zwyklego uzytkownika.
+     *
+     * @var string
+     */
+    const ROLE_USER = 'ROLE_USER';
+
+    /**
+     * Konto admina.
+     *
+     * @var string
+     */
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+
     /**
      * Primary key.
      *
@@ -32,11 +62,17 @@ class Dane
     private $email;
 
     /**
-     * haslo
-     *
-     * @var string
+     * Haslo.
      *
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *     min="3",
+     *     max="255",
+     * )
+     *
+     * @SecurityAssert\UserPassword
      */
     private $haslo;
 
@@ -53,9 +89,7 @@ class Dane
     /**
      * TypKonta
      *
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
      */
     private $TypKonta;
 
@@ -97,7 +131,7 @@ class Dane
      *
      * @return string|null Haslo
      */
-    public function getHaslo(): ?string
+    public function getPassword(): ?string
     {
         return $this->haslo;
     }
@@ -107,12 +141,30 @@ class Dane
      * @param string $haslo Haslo
      * @return Dane
      */
-    public function setHaslo(string $haslo): self
+    public function setPassword(string $haslo): self
     {
         $this->haslo = $haslo;
 
         return $this;
     }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using bcrypt or argon
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
 
     /**
      * Getter for uzytkownicy
@@ -143,24 +195,39 @@ class Dane
     }
 
     /**
-     * Getter for TypKonta
+     * Getter for the TypKonta.
      *
-     * @return string|null TypKonta
+     * @return string TypKonta
      */
-    public function getTypKonta(): ?string
+    public function getRoles() : string
     {
-        return $this->TypKonta;
+        $TypKonta = $this->TypKonta;
+        // guarantee every user at least has ROLE_USER
+        $TypKonta[] = static::ROLE_USER;
+
+        return $TypKonta;
     }
 
     /**
-     * Setter for TypKonta
+     * Setter for the TypKonta.
+     *
      * @param string $TypKonta TypKonta
-     * @return Dane
      */
-    public function setTypKonta(string $TypKonta): self
+    public function setRoles(string $TypKonta): void
     {
         $this->TypKonta = $TypKonta;
-
-        return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see UserInterface
+     *
+     * @return string User name
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->email;
+    }
+
 }

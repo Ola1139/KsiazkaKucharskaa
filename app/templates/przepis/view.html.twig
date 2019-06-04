@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.przepis_view'|trans({'%id%': przepis.id|default('')}) }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.przepis_view'|trans({'%id%': przepis.id|default('')}) }}</h1>
+    {% if przepis is defined and przepis|length %}
+        <dl class="dl-horizontal">
+
+            <dt>{{ 'label.tresc'|trans }}</dt>
+            <dd>{{ przepis.tresc }}</dd>
+            <dt>{{ 'autor' }}</dt>
+            <dd>{{ autor }}</dd>
+
+        </dl>
+
+        <a href="{{ url('przepis_delete', {id: przepis.id}) }}" title="{{ 'usun'|trans }}">
+        {{ 'usun'|trans }}
+        <a href="{{ url('przepis_edit', {id: przepis.id}) }}" title="{{ 'edytuj'|trans }}">
+        {{ 'edytuj'|trans }}
+        <a href="{{ url('stronaglowna_index') }}" title="{{ 'powrot'|trans }}">
+        {{ 'powrot'|trans }}
+    {% else %}
+        <p>
+            {{ 'message.item_not_found'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

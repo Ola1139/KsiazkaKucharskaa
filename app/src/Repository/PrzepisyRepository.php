@@ -42,6 +42,33 @@ class PrzepisyRepository extends ServiceEntityRepository
     }
 
     /**
+     * Save record.
+     *
+     * @param \App\Entity\Przepisy $przepisy Przepis entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save(Przepisy $przepisy): void
+    {
+        $this->_em->persist($przepisy);
+        $this->_em->flush($przepisy);
+    }
+
+    /**
+     * Delete record.
+     *
+     * @param \App\Entity\Przepisy $przepisy Przepisy entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function delete(Przepisy $przepisy): void
+    {
+        $this->_em->remove($przepisy);
+        $this->_em->flush($przepisy);
+    }
+    /**
      * Get or create new query builder.
      *
      * @param \Doctrine\ORM\QueryBuilder|null $queryBuilder Query builder
@@ -52,6 +79,7 @@ class PrzepisyRepository extends ServiceEntityRepository
     {
         return $queryBuilder ?: $this->createQueryBuilder('t');
     }
+
 
     // /**
     //  * @return Przepisy[] Returns an array of Przepisy objects

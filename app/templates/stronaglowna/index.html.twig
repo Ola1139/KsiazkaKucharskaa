@@ -1,38 +1,38 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title.task_list'|trans }}
+    {{ 'title.dane_list'|trans }}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.task_list'|trans }}</h1>
+    <h1>{{ 'title.dane_list'|trans }}</h1>
     {% if pagination is defined and pagination|length %}
 
         <div class="navigation text-center">
             {{ knp_pagination_render(pagination) }}
         </div>
-
+        <div>
+            <a href="" title="{{ 'zaloguj'|trans }}">
+                {{ 'zaloguj'|trans }}
+                <a href="" title="{{ 'zarejestruj'|trans }}">
+                    {{ 'zarejestruj'|trans }}
+        </div>
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>{{ knp_pagination_sortable(pagination, 'label.id'|trans, 't.id') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label.created_at'|trans, 't.createdAt') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label.updated_at'|trans, 't.updatedAt') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label.title'|trans, 't.title') }}</th>
-                <th>{{ 'label.actions'|trans }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'przepis'|trans, 't.tresc') }}</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
-            {% for task in pagination %}
+            {% for dane in pagination %}
                 <tr>
-                    <td>{{ task.id }}</td>
-                    <td>{{ task.createdAt|date('Y/m/d') }}</td>
-                    <td>{{ task.updatedAt|date('Y/m/d') }}</td>
-                    <td>{{ task.title }}</td>
+                    <td>{{ dane.tresc }}</td>
+
                     <td>
-                        <a href="{{ url('task_view', {id: task.id}) }}" title="{{ 'action.view'|trans }}">
-                            {{ 'action.view'|trans }}
-                        </a>
+                        <a href="{{ url('przepis_view', {id: dane.id}) }}" title="{{ 'zobacz wiecej'|trans }}">
+                            {{ 'zobacz wiecej'|trans }}
+
                     </td>
                 </tr>
             {% endfor %}
