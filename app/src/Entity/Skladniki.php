@@ -92,7 +92,7 @@ class Skladniki
     {
         if (!$this->przepisy->contains($przepisy)) {
             $this->przepisy[] = $przepisy;
-            $przepisy->addIdSkladnik($this);
+            $przepisy->addSkladnik($this);
         }
 
         return $this;
@@ -108,7 +108,7 @@ class Skladniki
     {
         if ($this->przepisy->contains($przepisy)) {
             $this->przepisy->removeElement($przepisy);
-            $przepisy->removeIdSkladnik($this);
+            $przepisy->removeSkladnik($this);
         }
 
         return $this;

@@ -6,8 +6,10 @@
 namespace App\Controller;
 
 use App\Entity\Przepisy;
+use App\Entity\PrzepisySkladniki;
 use App\Form\PrzepisyType;
 use App\Repository\PrzepisyRepository;
+use App\Repository\PrzepisySkladnikiRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -51,7 +53,7 @@ class PrzepisController extends AbstractController
 
             $this->addFlash('success', 'message.created_successfully');
 
-            return $this->redirectToRoute('przepis_view');
+            return $this->redirectToRoute('stronaglowna_index');
         }
 
         return $this->render(
@@ -89,7 +91,7 @@ class PrzepisController extends AbstractController
 
             $this->addFlash('success', 'message.updated_successfully');
 
-            return $this->redirectToRoute('przepis_view');
+            return $this->redirectToRoute('stronaglowna_index');
         }
 
         return $this->render(
@@ -120,20 +122,24 @@ class PrzepisController extends AbstractController
      *     name="przepis_delete",
      * )
      */
-    public function delete(Request $request, Przepisy $przepisy, PrzepisyRepository $repository): Response
+    public function delete(Request $request, Przepisy $przepisy, PrzepisyRepository $repository, PrzepisySkladniki $przepisySkladniki, PrzepisySkladnikiRepository $przepisySkladnikiRepository): Response
     {
+
         $form = $this->createForm(FormType::class, $przepisy, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
             $form->submit($request->request->get($form->getName()));
         }
-
+//zle
         if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $przepisy = $entityManager->getRepository(Przepisy::class)->find($request);
             $repository->delete($przepisy);
+            $przepisySkladnikiRepository->delete($przepisy);
             $this->addFlash('success', 'message.deleted_successfully');
 
-            return $this->redirectToRoute('przepis_view');
+            return $this->redirectToRoute('stronaglowna_index');
         }
 
         return $this->render(

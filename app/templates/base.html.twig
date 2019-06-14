@@ -30,5 +30,18 @@
         </div>
     {% endfor %}
 {% endfor %}
+
+{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+
+    <div>
+        <a href="{{ url('security_logout') }}">{{ 'action.logout'|trans }}</a>
+    </div>
+{% else %}
+    <div>
+        <a href="{{ url('security_login') }}">{{ 'action.login'|trans }}</a>
+        <a href="" title="{{ 'zarejestruj'|trans }}">
+            {{ 'zarejestruj'|trans }}
+    </div>
+{% endif %}
 </body>
 </html>

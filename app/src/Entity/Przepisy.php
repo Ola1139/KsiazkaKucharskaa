@@ -37,6 +37,7 @@ class Przepisy
      * @var string
      *
      * @ORM\Column(type="string", length=255)
+     *
      */
     private $tresc;
 
@@ -44,45 +45,46 @@ class Przepisy
      * @ORM\ManyToOne(targetEntity="App\Entity\Uzytkownicy", inversedBy="przepisy")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $id_autor;
+    private $autor;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Ulubione", mappedBy="id_przepis")
+     * @ORM\OneToMany(targetEntity="App\Entity\Ulubione", mappedBy="przepis")
      */
     private $ulubione;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Skargi", inversedBy="id_przepis")
+     * @ORM\OneToMany(targetEntity="App\Entity\Skargi", mappedBy="przepis")
      */
-    private $id_skargi;
+    private $skargi;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Komentarze", mappedBy="przepis")
      */
-    private $id_komentarze;
+    private $komentarze;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Zdjecia", mappedBy="przepis")
      */
-    private $id_zdjecie;
+    private $zdjecie;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Kategorie", mappedBy="przepis")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Kategorie", inversedBy="przepis")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $kategoria;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\PrzepisySkladniki", mappedBy="Przepis", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="App\Entity\PrzepisySkladniki", mappedBy="przepis", fetch="EXTRA_LAZY")
      */
-    private $id_skladnik;
+    private $skladnik;
 
     public function __construct()
     {
         $this->ulubione = new ArrayCollection();
-        $this->id_komentarze = new ArrayCollection();
-        $this->id_zdjecie = new ArrayCollection();
+        $this->komentarze = new ArrayCollection();
+        $this->zdjecie = new ArrayCollection();
         $this->kategoria = new ArrayCollection();
-        $this->id_skladnik = new ArrayCollection();
+        $this->skladnik = new ArrayCollection();
     }
 
     /**
@@ -107,10 +109,10 @@ class Przepisy
 
     /**Setter for Tresc
      *
-     * @param string $tresc Tresc
+     *  @param Przepisy|null $tresc Tresc
      * @return Przepisy
      */
-    public function setTresc(string $tresc): self
+    public function setTresc(?Przepisy $tresc): self
     {
         $this->tresc = $tresc;
 
@@ -118,23 +120,23 @@ class Przepisy
     }
 
     /**
-     * Getter for IdAutor
+     * Getter for Autor
      *
-     * @return Uzytkownicy|null IdAutor
+     * @return Uzytkownicy|null autor
      */
-    public function getIdAutor(): ?Uzytkownicy
+    public function getAutor(): ?Uzytkownicy
     {
-        return $this->id_autor;
+        return $this->autor;
     }
 
     /**
-     * Setter for IdAutor
-     * @param Uzytkownicy|null $id_autor IdAutor
+     * Setter for Autor
+     * @param Uzytkownicy|null $autor Autor
      * @return Przepisy
      */
-    public function setIdAutor(?Uzytkownicy $id_autor): self
+    public function setAutor(?Uzytkownicy $autor): self
     {
-        $this->id_autor = $id_autor;
+        $this->autor = $autor;
 
         return $this;
     }
@@ -156,7 +158,7 @@ class Przepisy
     {
         if (!$this->ulubione->contains($ulubione)) {
             $this->ulubione[] = $ulubione;
-            $ulubione->setIdPrzepis($this);
+            $ulubione->setPrzepis($this);
         }
 
         return $this;
@@ -173,8 +175,8 @@ class Przepisy
         if ($this->ulubione->contains($ulubione)) {
             $this->ulubione->removeElement($ulubione);
             // set the owning side to null (unless already changed)
-            if ($ulubione->getIdPrzepis() === $this) {
-                $ulubione->setIdPrzepis(null);
+            if ($ulubione->getPrzepis() === $this) {
+                $ulubione->setPrzepis(null);
             }
         }
 
@@ -182,24 +184,24 @@ class Przepisy
     }
 
     /**
-     * Getter for IdSkargi
+     * Getter for Skargi
      *
-     * @return Skargi|null IdSkargi
+     * @return Skargi|null Skargi
      */
-    public function getIdSkargi(): ?Skargi
+    public function getSkargi(): ?Skargi
     {
-        return $this->id_skargi;
+        return $this->skargi;
     }
 
     /**
-     * Setter dor IdSkargi
+     * Setter dor Skargi
      *
-     * @param Skargi|null $id_skargi IdSkargi
+     * @param Skargi|null $skargi Skargi
      * @return Przepisy
      */
-    public function setIdSkargi(?Skargi $id_skargi): self
+    public function setSkargi(?Skargi $skargi): self
     {
-        $this->id_skargi = $id_skargi;
+        $this->skargi = $skargi;
 
         return $this;
     }
@@ -207,22 +209,22 @@ class Przepisy
     /**
      * @return Collection|Komentarze[]
      */
-    public function getIdKomentarze(): Collection
+    public function getKomentarze(): Collection
     {
-        return $this->id_komentarze;
+        return $this->komentarze;
     }
 
     /**
      * Add
      *
-     * @param Komentarze $idKomentarze IdKomentarze
+     * @param Komentarze $Komentarze Komentarze
      * @return Przepisy
      */
-    public function addIdKomentarze(Komentarze $idKomentarze): self
+    public function addKomentarze(Komentarze $Komentarze): self
     {
-        if (!$this->id_komentarze->contains($idKomentarze)) {
-            $this->id_komentarze[] = $idKomentarze;
-            $idKomentarze->setPrzepis($this);
+        if (!$this->komentarze->contains($Komentarze)) {
+            $this->komentarze[] = $Komentarze;
+            $Komentarze->setPrzepis($this);
         }
 
         return $this;
@@ -231,16 +233,16 @@ class Przepisy
     /**
      * Remove
      *
-     * @param Komentarze $idKomentarze IdKomentarze
+     * @param Komentarze $Komentarze Komentarze
      * @return Przepisy
      */
-    public function removeIdKomentarze(Komentarze $idKomentarze): self
+    public function removeKomentarze(Komentarze $Komentarze): self
     {
-        if ($this->id_komentarze->contains($idKomentarze)) {
-            $this->id_komentarze->removeElement($idKomentarze);
+        if ($this->komentarze->contains($Komentarze)) {
+            $this->komentarze->removeElement($Komentarze);
             // set the owning side to null (unless already changed)
-            if ($idKomentarze->getPrzepis() === $this) {
-                $idKomentarze->setPrzepis(null);
+            if ($Komentarze->getPrzepis() === $this) {
+                $Komentarze->setPrzepis(null);
             }
         }
 
@@ -250,21 +252,21 @@ class Przepisy
     /**
      * @return Collection|Zdjecia[]
      */
-    public function getIdZdjecie(): Collection
+    public function getZdjecie(): Collection
     {
-        return $this->id_zdjecie;
+        return $this->zdjecie;
     }
 
     /**
      * Add
-     * @param Zdjecia $idZdjecie IdZdjecie
+     * @param Zdjecia $Zdjecie IdZdjecie
      * @return Przepisy
      */
-    public function addIdZdjecie(Zdjecia $idZdjecie): self
+    public function addZdjecie(Zdjecia $Zdjecie): self
     {
-        if (!$this->id_zdjecie->contains($idZdjecie)) {
-            $this->id_zdjecie[] = $idZdjecie;
-            $idZdjecie->setPrzepis($this);
+        if (!$this->zdjecie->contains($Zdjecie)) {
+            $this->zdjecie[] = $Zdjecie;
+            $Zdjecie->setPrzepis($this);
         }
 
         return $this;
@@ -273,16 +275,16 @@ class Przepisy
     /**
      * Remove
      *
-     * @param Zdjecia $idZdjecie IdZdjecie
+     * @param Zdjecia $Zdjecie Zdjecie
      * @return Przepisy
      */
-    public function removeIdZdjecie(Zdjecia $idZdjecie): self
+    public function removeZdjecie(Zdjecia $Zdjecie): self
     {
-        if ($this->id_zdjecie->contains($idZdjecie)) {
-            $this->id_zdjecie->removeElement($idZdjecie);
+        if ($this->zdjecie->contains($Zdjecie)) {
+            $this->zdjecie->removeElement($Zdjecie);
             // set the owning side to null (unless already changed)
-            if ($idZdjecie->getPrzepis() === $this) {
-                $idZdjecie->setPrzepis(null);
+            if ($Zdjecie->getPrzepis() === $this) {
+                $Zdjecie->setPrzepis(null);
             }
         }
 
@@ -335,21 +337,21 @@ class Przepisy
     /**
      * @return Collection|Skladniki[]
      */
-    public function getIdSkladnik(): Collection
+    public function getSkladnik(): Collection
     {
-        return $this->id_skladnik;
+        return $this->skladnik;
     }
 
     /**
      * Add
      *
-     * @param Skladniki $idSkladnik IdSkladnik
+     * @param Skladniki $Skladnik Skladnik
      * @return Przepisy
      */
-    public function addIdSkladnik(Skladniki $idSkladnik): self
+    public function addSkladnik(Skladniki $Skladnik): self
     {
-        if (!$this->id_skladnik->contains($idSkladnik)) {
-            $this->id_skladnik[] = $idSkladnik;
+        if (!$this->skladnik->contains($Skladnik)) {
+            $this->skladnik[] = $Skladnik;
         }
 
         return $this;
@@ -358,13 +360,13 @@ class Przepisy
     /**
      * Remove
      *
-     * @param Skladniki $idSkladnik IdSkladnik
+     * @param Skladniki $Skladnik Skladnik
      * @return Przepisy
      */
-    public function removeIdSkladnik(Skladniki $idSkladnik): self
+    public function removeSkladnik(Skladniki $Skladnik): self
     {
-        if ($this->id_skladnik->contains($idSkladnik)) {
-            $this->id_skladnik->removeElement($idSkladnik);
+        if ($this->skladnik->contains($Skladnik)) {
+            $this->skladnik->removeElement($Skladnik);
         }
 
         return $this;

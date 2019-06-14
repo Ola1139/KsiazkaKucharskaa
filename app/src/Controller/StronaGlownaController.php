@@ -72,7 +72,7 @@ class StronaGlownaController extends AbstractController
             ->find($przepisy);
 
 
-        $autor = $przepis->getIdAutor()->getImie();
+        $autor = $przepis->getAutor()->getImie();
 
         return $this->render(
             'przepis/view.html.twig',

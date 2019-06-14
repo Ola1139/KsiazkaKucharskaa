@@ -27,8 +27,7 @@ class Kategorie
     private $nazwa_kategorii;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Przepisy", inversedBy="kategoria")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity="App\Entity\Przepisy", mappedBy="kategoria")
      */
     private $przepis;
 

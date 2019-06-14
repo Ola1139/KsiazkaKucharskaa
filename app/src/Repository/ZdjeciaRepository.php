@@ -19,6 +19,23 @@ class ZdjeciaRepository extends ServiceEntityRepository
         parent::__construct($registry, Zdjecia::class);
     }
 
+    /**
+     * Delete record.
+     *
+     * @param \App\Entity\Zdjecia $zdjecia Zdjecia entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function delete(Zdjecia $zdjecia): void
+    {
+
+        $this->_em->remove($zdjecia);
+        $this->_em->flush($zdjecia);
+
+    }
+
+
     // /**
     //  * @return Zdjecia[] Returns an array of Zdjecia objects
     //  */

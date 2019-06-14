@@ -22,7 +22,7 @@ class PrzepisySkladniki
      * Przepis
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Przepisy", inversedBy="id_skladnik")
+     * @ORM\ManyToOne(targetEntity="Przepisy", inversedBy="skladnik")
      * @ORM\JoinColumn(nullable=false)
      */
     private $przepis;
@@ -42,12 +42,13 @@ class PrzepisySkladniki
      *
      * @ORM\Column(type="integer")
      */
-    private $IloscSkladnika;
+    private $iloscSkladnika;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\JednostkiMiary", mappedBy="JednostkaMiary")
+     * @ORM\ManyToOne(targetEntity="App\Entity\JednostkiMiary", inversedBy="jednostkaMiary")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $JednostkaMiary;
+    private $jednostkaMiary;
 
     public function __construct()
     {
@@ -61,12 +62,12 @@ class PrzepisySkladniki
 
     public function getIloscSkladnika(): ?int
     {
-        return $this->IloscSkladnika;
+        return $this->iloscSkladnika;
     }
 
-    public function setIloscSkladnika(int $IloscSkladnika): self
+    public function setIloscSkladnika(int $iloscSkladnika): self
     {
-        $this->IloscSkladnika = $IloscSkladnika;
+        $this->iloscSkladnika = $iloscSkladnika;
 
         return $this;
     }
@@ -100,13 +101,13 @@ class PrzepisySkladniki
      */
     public function getJednostkaMiary(): Collection
     {
-        return $this->JednostkaMiary;
+        return $this->jednostkaMiary;
     }
 
     public function addJednostkaMiary(JednostkiMiary $jednostkaMiary): self
     {
-        if (!$this->JednostkaMiary->contains($jednostkaMiary)) {
-            $this->JednostkaMiary[] = $jednostkaMiary;
+        if (!$this->jednostkaMiary->contains($jednostkaMiary)) {
+            $this->jednostkaMiary[] = $jednostkaMiary;
             $jednostkaMiary->setJednostkaMiary($this);
         }
 
@@ -115,8 +116,8 @@ class PrzepisySkladniki
 
     public function removeJednostkaMiary(JednostkiMiary $jednostkaMiary): self
     {
-        if ($this->JednostkaMiary->contains($jednostkaMiary)) {
-            $this->JednostkaMiary->removeElement($jednostkaMiary);
+        if ($this->jednostkaMiary->contains($jednostkaMiary)) {
+            $this->jednostkaMiary->removeElement($jednostkaMiary);
             // set the owning side to null (unless already changed)
             if ($jednostkaMiary->getJednostkaMiary() === $this) {
                 $jednostkaMiary->setJednostkaMiary(null);

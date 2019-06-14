@@ -81,25 +81,25 @@ class Uzytkownicy
      * @ORM\OneToOne(targetEntity="App\Entity\Dane", inversedBy="uzytkownicy", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $id_dane;
+    private $dane;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Komentarze", mappedBy="id_autor")
+     * @ORM\OneToMany(targetEntity="App\Entity\Komentarze", mappedBy="autor")
      */
     private $komentarze;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Przepisy", mappedBy="id_autor")
+     * @ORM\OneToMany(targetEntity="App\Entity\Przepisy", mappedBy="autor")
      */
     private $przepisy;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Ulubione", mappedBy="id_uzytkownik")
+     * @ORM\OneToMany(targetEntity="App\Entity\Ulubione", mappedBy="uzytkownik")
      */
     private $ulubione;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Skargi", mappedBy="id_autor")
+     * @ORM\OneToMany(targetEntity="App\Entity\Skargi", mappedBy="autor")
      */
     private $skarga;
 
@@ -258,24 +258,24 @@ class Uzytkownicy
     }
 
     /**
-     * Getter for IdDane
+     * Getter for Dane
      *
      * @return Dane|null IdDane
      */
-    public function getIdDane(): ?Dane
+    public function getDane(): ?Dane
     {
-        return $this->id_dane;
+        return $this->dane;
     }
 
     /**
-     * Setter for IdDane
+     * Setter for Dane
      *
-     * @param Dane $id_dane IdDane
+     * @param Dane $dane Dane
      * @return Uzytkownicy
      */
-    public function setIdDane(Dane $id_dane): self
+    public function setDane(Dane $dane): self
     {
-        $this->id_dane = $id_dane;
+        $this->dane = $dane;
 
         return $this;
     }

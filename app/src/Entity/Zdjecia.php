@@ -28,14 +28,14 @@ class Zdjecia
      *
      * @ORM\Column(type="string", length=255)
      */
-    private $nazwa_zdjecia;
+    private $nazwaZdjecia;
 
     /**
      * Przepis
      *
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Przepisy", inversedBy="id_zdjecie")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Przepisy", inversedBy="zdjecie")
      * @ORM\JoinColumn(nullable=false)
      */
     private $przepis;
@@ -58,18 +58,18 @@ class Zdjecia
 
     public function getNazwaZdjecia(): ?string
     {
-        return $this->nazwa_zdjecia;
+        return $this->nazwaZdjeciadjecia;
     }
 
     /**
-     * Setter for NazwaZdjecia
+     * Setter for nazwaZdjecia
      *
      * @param string $nazwa_zdjecia NazwaZdjecia
      * @return Zdjecia
      */
-    public function setNazwaZdjecia(string $nazwa_zdjecia): self
+    public function setNazwaZdjecia(string $nazwaZdjecia): self
     {
-        $this->nazwa_zdjecia = $nazwa_zdjecia;
+        $this->nazwaZdjecia = $nazwaZdjecia;
 
         return $this;
     }

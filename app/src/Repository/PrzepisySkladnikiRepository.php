@@ -19,6 +19,22 @@ class PrzepisySkladnikiRepository extends ServiceEntityRepository
         parent::__construct($registry, PrzepisySkladniki::class);
     }
 
+    /**
+     * Delete record.
+     *
+     * @param \App\Entity\PrzepisySkladniki $przepisySkladniki PrzepisySkladniki entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function delete(PrzepisySkladniki $przepisySkladniki): void
+    {
+
+        $this->_em->remove($przepisySkladniki);
+        $this->_em->flush($przepisySkladniki);
+
+    }
+
     // /**
     //  * @return PrzepisySkladniki[] Returns an array of PrzepisySkladniki objects
     //  */

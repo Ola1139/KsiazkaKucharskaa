@@ -81,17 +81,17 @@ class Dane implements UserInterface
      *
      * @var int
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Uzytkownicy", mappedBy="id_dane", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Uzytkownicy", mappedBy="dane", cascade={"persist", "remove"})
      */
     private $uzytkownicy;
 
 
     /**
-     * TypKonta
+     * Roles.
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="array")
      */
-    private $TypKonta;
+    private $roles = [];
 
     /**
      * Getter fo Id
@@ -169,7 +169,7 @@ class Dane implements UserInterface
     /**
      * Getter for uzytkownicy
      *
-     * @return Uzytkownicy|null Uzytkownicy
+     * @return Uzytkownicy|null uzytkownicy
      */
     public function getUzytkownicy(): ?Uzytkownicy
     {
@@ -187,35 +187,35 @@ class Dane implements UserInterface
         $this->uzytkownicy = $uzytkownicy;
 
         // set the owning side of the relation if necessary
-        if ($this !== $uzytkownicy->getIdDane()) {
-            $uzytkownicy->setIdDane($this);
+        if ($this !== $uzytkownicy->getDane()) {
+            $uzytkownicy->setDane($this);
         }
 
         return $this;
     }
 
     /**
-     * Getter for the TypKonta.
+     * Getter for the Roles.
      *
-     * @return string TypKonta
+     * @return array Roles
      */
-    public function getRoles() : string
+    public function getRoles() : array
     {
-        $TypKonta = $this->TypKonta;
+        $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $TypKonta[] = static::ROLE_USER;
+        $roles[] = static::ROLE_USER;
 
-        return $TypKonta;
+        return array_unique($roles);
     }
 
     /**
-     * Setter for the TypKonta.
+     * Setter for the Roles.
      *
-     * @param string $TypKonta TypKonta
+     * @param array $roles Roles
      */
-    public function setRoles(string $TypKonta): void
+    public function setRoles(array $roles): void
     {
-        $this->TypKonta = $TypKonta;
+        $this->roles = $roles;
     }
 
     /**

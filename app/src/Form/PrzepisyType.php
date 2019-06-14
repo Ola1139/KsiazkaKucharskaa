@@ -1,12 +1,13 @@
 <?php
 /**
- * Task type.
+ * Przepis type.
  */
 
 namespace App\Form;
 
 use App\Entity\Przepisy;
 use App\Entity\PrzepisySkladniki;
+use App\Entity\Skladniki;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -39,31 +40,35 @@ class PrzepisyType extends AbstractType
                 'label' => 'label.tresc',
                 'required' => true,
                 'attr' => ['max_length' => 255],
-            ]
-        );
-        $builder->add(
-            'skladnik',
-            EntityType::class,
-            [
-                'class' => PrzepisySkladniki::class,
-                'choice_label' => function ($skladnik) {
-                    return $skladnik->getSkladnik();
-                },
-                'label' => 'label.skladnik',
-                'placeholder' => 'label.none',
-                'required' => true,
+                'allow_delete' => true,
             ]
         );
 
-        $builder->add(
-            'iloscskladnika',
-            IntegerType::class,
-            [
-                'label' => 'label.iloscskladnika',
-                'required' => true,
-                'attr' => ['max_length' => 255],
-            ]
-        );
+
+//        $builder->add(
+//            'skladnik',
+//            EntityType::class,
+//            [
+//                'class' => PrzepisySkladniki::class,
+//                'choice_label' => function ($skladnik) {
+//                    return $skladnik->getSkladnik();
+//                },
+//                'label' => 'label.skladnik',
+//                'placeholder' => 'label.none',
+//                'required' => true,
+//            ]
+//        );
+
+
+//        $builder->add(
+//            'iloscSkladnika',
+//            IntegerType::class,
+//            [
+//                'label' => 'label.iloscSkladnika',
+//                'required' => true,
+//                'attr' => ['max_length' => 255],
+//            ]
+//        );
     }
 
     /**

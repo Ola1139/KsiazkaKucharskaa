@@ -43,10 +43,10 @@ class Komentarze
      * @ORM\ManyToOne(targetEntity="App\Entity\Uzytkownicy", inversedBy="komentarze")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $id_autor;
+    private $autor;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Przepisy", inversedBy="id_komentarze")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Przepisy", inversedBy="komentarze")
      * @ORM\JoinColumn(nullable=false)
      */
     private $przepis;
@@ -112,24 +112,24 @@ class Komentarze
     }
 
     /**
-     * Getter for IdAutor
+     * Getter for Autor
      *
-     * @return Uzytkownicy|null IdAutor
+     * @return Uzytkownicy|null Autor
      */
-    public function getIdAutor(): ?Uzytkownicy
+    public function getAutor(): ?Uzytkownicy
     {
-        return $this->id_autor;
+        return $this->autor;
     }
 
     /**
-     * Setter for IdAutor
+     * Setter for Autor
      *
-     * @param Uzytkownicy|null $id_autor IdAutor
+     * @param Uzytkownicy|null $autor Autor
      * @return Komentarze
      */
-    public function setIdAutor(?Uzytkownicy $id_autor): self
+    public function setAutor(?Uzytkownicy $autor): self
     {
-        $this->id_autor = $id_autor;
+        $this->autor = $autor;
 
         return $this;
     }

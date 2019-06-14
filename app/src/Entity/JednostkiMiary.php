@@ -27,13 +27,12 @@ class JednostkiMiary
      * @var string
      * @ORM\Column(type="string", length=255)
      */
-    private $nazwa_jednostki_miary;
+    private $nazwaJednostkiMiary;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\PrzepisySkladniki", inversedBy="JednostkaMiary")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity="App\Entity\PrzepisySkladniki", mappedBy="jednostkaMiary")
      */
-    private $JednostkaMiary;
+    private $jednostkaMiary;
 
     /**
      * Getter for Id

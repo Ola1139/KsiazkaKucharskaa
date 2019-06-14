@@ -6,6 +6,7 @@
 namespace App\Repository;
 
 use App\Entity\Przepisy;
+use App\Entity\Zdjecia;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -20,6 +21,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class PrzepisyRepository extends ServiceEntityRepository
 {
+
+
     /**
      * PrzepisyRepository constructor.
      *
@@ -58,15 +61,18 @@ class PrzepisyRepository extends ServiceEntityRepository
     /**
      * Delete record.
      *
-     * @param \App\Entity\Przepisy $przepisy Przepisy entity
+     * @param \App\Entity\Przepisy $przepis Przepisy entity
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function delete(Przepisy $przepisy): void
+    public function delete(Przepisy $przepis): void
     {
-        $this->_em->remove($przepisy);
-        $this->_em->flush($przepisy);
+
+            $this->_em->remove($przepis);
+            $this->_em->flush($przepis);
+
+
     }
     /**
      * Get or create new query builder.

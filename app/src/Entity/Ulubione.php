@@ -23,13 +23,13 @@ class Ulubione
      * @ORM\ManyToOne(targetEntity="App\Entity\Uzytkownicy", inversedBy="ulubione")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $id_uzytkownik;
+    private $uzytkownik;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Przepisy", inversedBy="ulubione")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $id_przepis;
+    private $przepis;
 
     /**
      * Getter for Id
@@ -42,47 +42,47 @@ class Ulubione
     }
 
     /**
-     * Getter for IdUzytkownik
+     * Getter for Uzytkownik
      *
-     * @return Uzytkownicy|null IdUzytkownik
+     * @return Uzytkownicy|null Uzytkownik
      */
-    public function getIdUzytkownik(): ?Uzytkownicy
+    public function getUzytkownik(): ?Uzytkownicy
     {
-        return $this->id_uzytkownik;
+        return $this->uzytkownik;
     }
 
     /**
-     * Setter for IdUzytkownik
+     * Setter for Uzytkownik
      *
-     * @param Uzytkownicy|null $id_uzytkownik IdUzytkownik
+     * @param Uzytkownicy|null $uzytkownik Uzytkownik
      * @return Ulubione
      */
-    public function setIdUzytkownik(?Uzytkownicy $id_uzytkownik): self
+    public function setUzytkownik(?Uzytkownicy $uzytkownik): self
     {
-        $this->id_uzytkownik = $id_uzytkownik;
+        $this->uzytkownik = $uzytkownik;
 
         return $this;
     }
 
     /**
-     *Getter for IdPrzepis
+     *Getter for Przepis
      *
      * @return Przepisy|null przepis
      */
-    public function getIdPrzepis(): ?Przepisy
+    public function getPrzepis(): ?Przepisy
     {
-        return $this->id_przepis;
+        return $this->przepis;
     }
 
     /**
-     * Setter for IdPrzepis
+     * Setter for Przepis
      *
-     * @param Przepisy|null $id_przepis IdPrzepis
+     * @param Przepisy|null $id_przepis Przepis
      * @return Ulubione
      */
-    public function setIdPrzepis(?Przepisy $id_przepis): self
+    public function setPrzepis(?Przepisy $id_przepis): self
     {
-        $this->id_przepis = $id_przepis;
+        $this->przepis = $id_przepis;
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Przepisy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -35,12 +36,13 @@ class Skargi
      * @ORM\ManyToOne(targetEntity="App\Entity\Uzytkownicy", inversedBy="skarga")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $id_autor;
+    private $autor;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Przepisy", mappedBy="id_skargi")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Przepisy", inversedBy="skargi")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $id_przepis;
+    private $przepis;
 
     public function __construct()
     {
@@ -82,48 +84,48 @@ class Skargi
     }
 
     /**
-     * Getter for IdAutor
+     * Getter for Autor
      *
-     * @return Uzytkownicy|null IdAutor
+     * @return Uzytkownicy|null Autor
      */
-    public function getIdAutor(): ?Uzytkownicy
+    public function getAutor(): ?Uzytkownicy
     {
-        return $this->id_autor;
+        return $this->autor;
     }
 
     /**
-     * Setter for IdAutor
-     * @param Uzytkownicy|null $id_autor IdAutor
+     * Setter for Autor
+     * @param Uzytkownicy|null $autor IdAutor
      * @return Skargi
      */
-    public function setIdAutor(?Uzytkownicy $id_autor): self
+    public function setIdAutor(?Uzytkownicy $autor): self
     {
-        $this->id_autor = $id_autor;
+        $this->autor = $autor;
 
         return $this;
     }
 
     /**
-     * Getter for IdPrzepis
+     * Getter for Przepis
      *
      * @return Collection|Przepisy[]
      */
-    public function getIdPrzepis(): Collection
+    public function getPrzepis(): Collection
     {
-        return $this->id_przepis;
+        return $this->przepis;
     }
 
     /**
      * Add
      *
-     * @param Przepisy $idPrzepis
+     * @param Przepisy $przepisy
      * @return Skargi
      */
-    public function addIdPrzepi(Przepisy $idPrzepis): self
+    public function addIdPrzepi(Przepisy $przepisy): self
     {
-        if (!$this->id_przepis->contains($idPrzepis)) {
-            $this->id_przepis[] = $idPrzepis;
-            $idPrzepis->setIdSkargi($this);
+        if (!$this->przepis->contains($przepisy)) {
+            $this->przepis[] = $przepisy;
+            $przepisy->setSkargi($this);
         }
 
         return $this;
@@ -132,16 +134,16 @@ class Skargi
     /**
      * Remove
      *
-     * @param Przepisy $idPrzepis IdPrzepis
+     * @param Przepisy $przepisy Przepis
      * @return Skargi
      */
-    public function removeIdPrzepis(Przepisy $idPrzepis): self
+    public function removePrzepis(Przepisy $przepisy): self
     {
-        if ($this->id_przepis->contains($idPrzepis)) {
-            $this->id_przepis->removeElement($idPrzepis);
+        if ($this->przepis->contains($przepisy)) {
+            $this->przepis->removeElement($przepisy);
             // set the owning side to null (unless already changed)
-            if ($idPrzepis->getIdSkargi() === $this) {
-                $idPrzepis->setIdSkargi(null);
+            if ($przepisy->getSkargi() === $this) {
+                $przepisy->setSkargi(null);
             }
         }
 
