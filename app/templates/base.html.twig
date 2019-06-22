@@ -21,6 +21,11 @@
     {% include 'default/_flash_messages.html.twig' %}
 
 </div>
+<div>
+    <a href="{{ url('przepis_new') }}">{{ 'action.add'|trans }}</a>
+    <a href="{{ url('stronaglowna_index') }}" title="{{ 'back'|trans }}">
+        {{ 'action.back'|trans }} </a>
+</div>
 
 </div>
 {% for type, messages in app.session.flashBag.all %}
@@ -35,12 +40,15 @@
 
     <div>
         <a href="{{ url('security_logout') }}">{{ 'action.logout'|trans }}</a>
+        <a href="{{ url('profil_index') }}">{{ 'action.customer_panel'|trans }}</a>
     </div>
 {% else %}
     <div>
         <a href="{{ url('security_login') }}">{{ 'action.login'|trans }}</a>
-        <a href="" title="{{ 'zarejestruj'|trans }}">
-            {{ 'zarejestruj'|trans }}
+        <a href=""> {{ 'action.register'|trans }}</a>
+
+
+
     </div>
 {% endif %}
 </body>

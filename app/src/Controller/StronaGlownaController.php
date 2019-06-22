@@ -8,6 +8,7 @@ namespace App\Controller;
 use App\Entity\Przepisy;
 use App\Repository\PrzepisyRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,6 +64,9 @@ class StronaGlownaController extends AbstractController
      *     name="przepis_view",
      *     requirements={"id": "[1-9]\d*"},
      * )
+     *
+     *
+     *
      */
     public function view(Przepisy $przepisy): Response
     {

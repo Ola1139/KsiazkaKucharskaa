@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Przepisy;
 use App\Entity\Uzytkownicy;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -18,7 +19,19 @@ class UzytkownicyRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Uzytkownicy::class);
     }
-
+    /**
+     * Save record.
+     *
+     * @param \App\Entity\Uzytkownicy $uzytkownicy Uzytkownicy entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save(Uzytkownicy $uzytkownicy): void
+    {
+        $this->_em->persist($uzytkownicy);
+        $this->_em->flush($uzytkownicy);
+    }
     // /**
     //  * @return Uzytkownicy[] Returns an array of Uzytkownicy objects
     //  */

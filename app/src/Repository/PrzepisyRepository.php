@@ -6,6 +6,7 @@
 namespace App\Repository;
 
 use App\Entity\Przepisy;
+use App\Entity\Uzytkownicy;
 use App\Entity\Zdjecia;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -61,19 +62,18 @@ class PrzepisyRepository extends ServiceEntityRepository
     /**
      * Delete record.
      *
-     * @param \App\Entity\Przepisy $przepis Przepisy entity
+     * @param \App\Entity\Przepisy $przepis Przepis entity
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function delete(Przepisy $przepis): void
+    public function delete(Przepisy $przepis)
     {
 
-            $this->_em->remove($przepis);
-            $this->_em->flush($przepis);
-
-
+        $this->_em->remove($przepis);
+        $this->_em->flush($przepis);
     }
+
     /**
      * Get or create new query builder.
      *
@@ -86,10 +86,28 @@ class PrzepisyRepository extends ServiceEntityRepository
         return $queryBuilder ?: $this->createQueryBuilder('t');
     }
 
+    /**
+     * Query tasks by autor
+     *
+     * @param \App\Entity\Uzytkownicy|null $uzytkownicy Uzytkownicy entity
+     *
+     * @return \Doctrine\ORM\QueryBuilder Query builder
+     */
+    public function queryByAuthor(Uzytkownicy $uzytkownicy = null): QueryBuilder
+    {
 
-    // /**
-    //  * @return Przepisy[] Returns an array of Przepisy objects
-    //  */
+        $queryBuilder =$this->queryAll() ;
+
+        if (!is_null($uzytkownicy)) {
+            $queryBuilder->andWhere('t.autor = :autor')
+                ->setParameter('autor', $uzytkownicy);
+        }
+
+        return $queryBuilder;
+    }
+
+
+
     /*
     public function findByExampleField($value)
     {

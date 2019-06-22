@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.data_view'|trans}}) }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.data_view'|trans }}</h1>
+
+        <dl class="dl-horizontal">
+
+            <dt>{{ 'label.name'|trans }}</dt>
+            <dd>{{ uzytkownik.imie }}</dd>
+            <dt>{{ 'label.surname'|trans }}</dt>
+            <dd>{{ uzytkownik.nazwisko }}</dd>
+            <dt>{{ 'label.hobby'|trans }}</dt>
+            <dd>{{ uzytkownik.zainteresowania }}</dd>
+            <dt>{{ 'label.favorite_cuisine'|trans }}</dt>
+            <dd>{{ uzytkownik.UlubionaKuchnia }}</dd>
+            <dt>{{ 'label.favorite_dish'|trans }}</dt>
+            <dd>{{ uzytkownik.UlubionaPotrawa }}</dd>
+            <dt>{{ 'label.about_me'|trans }}</dt>
+            <dd>{{ uzytkownik.OSobie }}</dd>
+        </dl>
+    <a href="{{ url('data_edit') }}" title="{{ 'edit_data'|trans }}">{{ 'action.edit'|trans }}</a>
+
+{% endblock %}

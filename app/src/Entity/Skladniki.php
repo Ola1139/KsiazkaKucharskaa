@@ -33,7 +33,7 @@ class Skladniki
     private $nazwa;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\PrzepisySkladniki", mappedBy="skladnik", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="App\Entity\PrzepisySkladniki", mappedBy="skladnik",  orphanRemoval=true)
      */
     private $przepisy;
 
@@ -108,7 +108,10 @@ class Skladniki
     {
         if ($this->przepisy->contains($przepisy)) {
             $this->przepisy->removeElement($przepisy);
-            $przepisy->removeSkladnik($this);
+            // set the owning side to null (unless already changed)
+            if ($przepisy->getSkladnik() === $this) {
+                $przepisy->addSkladnik(null);
+            }
         }
 
         return $this;

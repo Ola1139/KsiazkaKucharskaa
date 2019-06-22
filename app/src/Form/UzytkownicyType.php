@@ -1,12 +1,13 @@
 <?php
 /**
- * Przepis type.
+ * Uzytkownicy type.
  */
 
 namespace App\Form;
 
 use App\Entity\Kategorie;
 use App\Entity\Przepisy;
+use App\Entity\Uzytkownicy;
 use App\Entity\PrzepisySkladniki;
 use App\Entity\Skladniki;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -21,9 +22,9 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 
 /**
- * Class PrzepisyType.
+ * Class UzytkownicyType.
  */
-class PrzepisyType extends AbstractType
+class UzytkownicyType extends AbstractType
 {
     /**
      * Builds the form.
@@ -40,43 +41,64 @@ class PrzepisyType extends AbstractType
     {
 
         $builder->add(
-            'tytul',
+        'imie',
+        TextType::class,
+        [
+            'label' => 'label.name',
+            'required' => true,
+            'attr' => ['max_length' => 255],
+        ]
+    );
+
+
+        $builder->add(
+            'nazwisko',
             TextType::class,
             [
-                'label' => 'label.title',
+                'label' => 'label.surname',
                 'required' => true,
                 'attr' => ['max_length' => 255],
             ]
         );
         $builder->add(
-            'tresc',
+            'zainteresowania',
+            TextType::class,
+            [
+                'label' => 'label.hobby',
+                'required' => false,
+                'attr' => ['max_length' => 255],
+            ]
+        );
+        $builder->add(
+            'ulubionaKuchnia',
+            TextType::class,
+            [
+                'label' => 'label.favoriteCusine',
+                'required' => false,
+                'attr' => ['max_length' => 255],
+            ]
+        );
+        $builder->add(
+            'ulubionaPotrawa',
+            TextType::class,
+            [
+                'label' => 'label.favoritedish',
+                'required' => false,
+
+                'attr' => ['max_length' => 255],
+            ]
+        );
+
+        $builder->add(
+            'OSobie',
             TextareaType::class,
             [
-                'label' => 'label.contents',
-                'required' => true,
+                'label' => 'label.OSobie',
+                'required' => false,
+
                 'attr' => ['max_length' => 255],
             ]
         );
-        $builder->add(
-            'kategoria',
-            EntityType::class,
-            [
-                'class' => Kategorie::class,
-                'choice_label' => function ($kategoria) {
-                    return $kategoria->getNazwaKategorii();
-                },
-                'label' => 'label.category',
-                'required' => true,
-            ]
-        );
-
-        $builder->add('skladnik', CollectionType::class, [
-            'entry_type' => SkladnikiType::class,
-            'entry_options' => ['label' => false],
-            'allow_add' => true,
-            'by_reference' => false,
-        ]);
-
 
     }
     /**
@@ -86,7 +108,7 @@ class PrzepisyType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => Przepisy::class]);
+        $resolver->setDefaults(['data_class' => Uzytkownicy::class]);
     }
 
     /**
@@ -99,6 +121,6 @@ class PrzepisyType extends AbstractType
      */
     public function getBlockPrefix():string
     {
-        return 'przepisy';
+        return 'uzytkownicy';
     }
 }

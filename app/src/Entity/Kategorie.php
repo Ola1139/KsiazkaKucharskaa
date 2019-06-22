@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,10 +33,17 @@ class Kategorie
      */
     private $przepis;
 
+    public function __construct()
+    {
+        $this->przepis = new ArrayCollection();
+    }
+
     /**
      * Getter for Id
      * @return int|null Id
      */
+
+
     public function getId(): ?int
     {
         return $this->id;

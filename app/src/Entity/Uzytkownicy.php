@@ -89,6 +89,7 @@ class Uzytkownicy
     private $komentarze;
 
     /**
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Przepisy", mappedBy="autor")
      */
     private $przepisy;
@@ -106,6 +107,7 @@ class Uzytkownicy
     public function __construct()
     {
         $this->komentarze = new ArrayCollection();
+        $this->dane = new ArrayCollection();
         $this->przepisy = new ArrayCollection();
         $this->ulubione = new ArrayCollection();
         $this->skarga = new ArrayCollection();
@@ -298,7 +300,7 @@ class Uzytkownicy
     {
         if (!$this->komentarze->contains($komentarze)) {
             $this->komentarze[] = $komentarze;
-            $komentarze->setIdAutor($this);
+            $komentarze->setAutor($this);
         }
 
         return $this;
@@ -315,8 +317,8 @@ class Uzytkownicy
         if ($this->komentarze->contains($komentarze)) {
             $this->komentarze->removeElement($komentarze);
             // set the owning side to null (unless already changed)
-            if ($komentarze->getIdAutor() === $this) {
-                $komentarze->setIdAutor(null);
+            if ($komentarze->getAutor() === $this) {
+                $komentarze->setAutor(null);
             }
         }
 
@@ -324,44 +326,24 @@ class Uzytkownicy
     }
 
     /**
-     * @return Collection|Przepisy[]
+     * Getter for Przepisy
+     *
+     * @return Collection
      */
-    public function getPrzepisy(): Collection
+    public function getPrzepis(): Collection
     {
         return $this->przepisy;
     }
 
     /**
-     * Add
+     * Setter for Przepisy
      *
-     * @param Przepisy $przepisy
-     * @return Uzytkownicy
+     * @param Przepisy|null $przepis Przepisy
+     * @return Przepisy
      */
-    public function addPrzepisy(Przepisy $przepisy): self
+    public function setPrzepis(?Przepisy $przepis): self
     {
-        if (!$this->przepisy->contains($przepisy)) {
-            $this->przepisy[] = $przepisy;
-            $przepisy->setIdAutor($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove
-     *
-     * @param Przepisy $przepisy
-     * @return Uzytkownicy
-     */
-    public function removePrzepisy(Przepisy $przepisy): self
-    {
-        if ($this->przepisy->contains($przepisy)) {
-            $this->przepisy->removeElement($przepisy);
-            // set the owning side to null (unless already changed)
-            if ($przepisy->getIdAutor() === $this) {
-                $przepisy->setIdAutor(null);
-            }
-        }
+        $this->przepisy = $przepis;
 
         return $this;
     }
@@ -384,7 +366,7 @@ class Uzytkownicy
     {
         if (!$this->ulubione->contains($ulubione)) {
             $this->ulubione[] = $ulubione;
-            $ulubione->setIdUzytkownik($this);
+            $ulubione->setUzytkownik($this);
         }
 
         return $this;
@@ -401,8 +383,8 @@ class Uzytkownicy
         if ($this->ulubione->contains($ulubione)) {
             $this->ulubione->removeElement($ulubione);
             // set the owning side to null (unless already changed)
-            if ($ulubione->getIdUzytkownik() === $this) {
-                $ulubione->setIdUzytkownik(null);
+            if ($ulubione->getUzytkownik() === $this) {
+                $ulubione->setUzytkownik(null);
             }
         }
 
@@ -427,7 +409,7 @@ class Uzytkownicy
     {
         if (!$this->skarga->contains($skarga)) {
             $this->skarga[] = $skarga;
-            $skarga->setIdAutor($this);
+            $skarga->setAutor($this);
         }
 
         return $this;
@@ -443,8 +425,8 @@ class Uzytkownicy
         if ($this->skarga->contains($skarga)) {
             $this->skarga->removeElement($skarga);
             // set the owning side to null (unless already changed)
-            if ($skarga->getIdAutor() === $this) {
-                $skarga->setIdAutor(null);
+            if ($skarga->getAutor() === $this) {
+                $skarga->setAutor(null);
             }
         }
 

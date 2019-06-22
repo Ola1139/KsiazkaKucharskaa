@@ -8,6 +8,11 @@
     <h1>{{ 'title.przepis_new'|trans }}</h1>
     {{ form_start(form, { method: 'POST', action: url('przepis_new') }) }}
     {{ form_widget(form) }}
+    <li>
+        <ul class="skladnik" data-prototype="{{ form_widget(form.skladnik.vars.prototype)|e('html_attr') }}">
+
+    </ul>
+    </li>
     <div class="form-group row float-sm-right">
         <input type="submit" value="{{ 'action.save'|trans }}" class="btn btn-primary" />
     </div>
@@ -17,4 +22,5 @@
         </a>
     </div>
     {{ form_end(form) }}
+
 {% endblock %}

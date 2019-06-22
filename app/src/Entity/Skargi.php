@@ -24,7 +24,8 @@ class Skargi
     private $id;
 
 
-    /**Tresc
+    /**
+     * Tresc
      *
      * @var string
      *
@@ -98,7 +99,7 @@ class Skargi
      * @param Uzytkownicy|null $autor IdAutor
      * @return Skargi
      */
-    public function setIdAutor(?Uzytkownicy $autor): self
+    public function setAutor(?Uzytkownicy $autor): self
     {
         $this->autor = $autor;
 
@@ -121,7 +122,7 @@ class Skargi
      * @param Przepisy $przepisy
      * @return Skargi
      */
-    public function addIdPrzepi(Przepisy $przepisy): self
+    public function addPrzepis(Przepisy $przepisy): self
     {
         if (!$this->przepis->contains($przepisy)) {
             $this->przepis[] = $przepisy;

@@ -6,16 +6,24 @@
 namespace App\Controller;
 
 use App\Entity\Przepisy;
+use App\Entity\Skladniki;
+use App\Entity\Uzytkownicy;
+use App\Entity\Dane;
 use App\Entity\PrzepisySkladniki;
 use App\Form\PrzepisyType;
 use App\Repository\PrzepisyRepository;
 use App\Repository\PrzepisySkladnikiRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Types\TextType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+
+
 
 /**
  * Class PrzepisController.
@@ -44,21 +52,38 @@ class PrzepisController extends AbstractController
      */
     public function new(Request $request, PrzepisyRepository $repository): Response
     {
-        $przepisy = new Przepisy();
+            $przepisy = new Przepisy();
+//        $przepisy = $entityManager->getRepository(Przepisy::class)->find($id);
+//        foreach ($przepisy as $skladniki) {
+//            $skladniki = new Skladniki();
+//            var_dump($przepisy->getSkladnik());
+//            $skladniki->setNazwa($przepisy->getSkladnik());
+//            $przepisy->getSkladnik()->add($skladniki->getNazwa());
+//        }
+
+
+//        $tag1 = new Skladniki();
+//        $tag1->setNazwa('tag1');
+//        $przepisy->getSkladnik()->add($tag1);
+//        $tag2 = new Skladniki();
+//        $tag2->setNazwa('tag2');
+//        $przepisy->getSkladnik()->add($tag2);
+
         $form = $this->createForm(PrzepisyType::class, $przepisy);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->save($przepisy);
+         $przepisy->setAutor($this->getUser()->getUzytkownicy());
+        $repository->save($przepisy);
 
             $this->addFlash('success', 'message.created_successfully');
 
             return $this->redirectToRoute('stronaglowna_index');
         }
 
-        return $this->render(
-            'przepis/new.html.twig',
-            ['form' => $form->createView()]
+       return $this->render(
+           'przepis/new.html.twig',
+           ['form' => $form->createView()]
         );
     }
 
@@ -67,7 +92,7 @@ class PrzepisController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
      * @param \App\Entity\Przepisy                          $przepisy       Przepis entity
-     * @param \App\Repository\PrzepisyRepository            $repository Przepisy repository
+     * @param \App\Repository\PrzepisyRepository            $repository Przepis repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -83,10 +108,22 @@ class PrzepisController extends AbstractController
      */
     public function edit(Request $request, Przepisy $przepisy, PrzepisyRepository $repository): Response
     {
+        if ($przepisy->getAutor() !== $this->getUser()->getUzytkownicy()) {
+            $this->addFlash('warning', 'message.item_not_found');
+
+            return $this->redirectToRoute('stronaglowna_index');
+        }
+
+        $originalSkladniki = new ArrayCollection();
+
+        foreach ($przepisy->getSkladnik() as $skladnik) {
+            $originalSkladniki->add($skladnik);
+        }
         $form = $this->createForm(PrzepisyType::class, $przepisy, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $repository->save($przepisy);
 
             $this->addFlash('success', 'message.updated_successfully');
@@ -95,7 +132,7 @@ class PrzepisController extends AbstractController
         }
 
         return $this->render(
-            'przepis/edit.html.twig',
+            'przepis/editData.html.twig',
             [
                 'form' => $form->createView(),
                 'przepis' => $przepisy,
@@ -107,7 +144,7 @@ class PrzepisController extends AbstractController
      * Delete action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Przepisy                          $przepisy       Przepisy entity
+     * @param \App\Entity\Przepisy                          $przepis       Przepisy entity
      * @param \App\Repository\PrzepisyRepository            $repository Przepisy repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
@@ -122,21 +159,23 @@ class PrzepisController extends AbstractController
      *     name="przepis_delete",
      * )
      */
-    public function delete(Request $request, Przepisy $przepisy, PrzepisyRepository $repository, PrzepisySkladniki $przepisySkladniki, PrzepisySkladnikiRepository $przepisySkladnikiRepository): Response
+    public function delete(Request $request, Przepisy $przepisy, PrzepisyRepository $repository): Response
     {
+        if ($przepisy->getAutor() !== $this->getUser()->getUzytkownicy() ) {
+            $this->addFlash('warning', 'message.item_not_found');
 
+            return $this->redirectToRoute('stronaglowna_index');
+        }
         $form = $this->createForm(FormType::class, $przepisy, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
             $form->submit($request->request->get($form->getName()));
         }
-//zle
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $przepisy = $entityManager->getRepository(Przepisy::class)->find($request);
+
             $repository->delete($przepisy);
-            $przepisySkladnikiRepository->delete($przepisy);
             $this->addFlash('success', 'message.deleted_successfully');
 
             return $this->redirectToRoute('stronaglowna_index');
@@ -146,8 +185,10 @@ class PrzepisController extends AbstractController
             'przepis/delete.html.twig',
             [
                 'form' => $form->createView(),
-                'przepis' => $przepisy,
+                'przepis' => $przepisy
             ]
         );
     }
+
+
 }

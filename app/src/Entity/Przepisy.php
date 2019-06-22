@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,6 +31,15 @@ class Przepisy
      */
     private $id;
 
+    /**
+     * Tytul
+     *
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     */
+    private $tytul;
 
     /**
      * Tresc
@@ -48,33 +58,34 @@ class Przepisy
     private $autor;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Ulubione", mappedBy="przepis")
+     * @ORM\OneToMany(targetEntity="App\Entity\Ulubione", mappedBy="przepis",  orphanRemoval=true)
      */
     private $ulubione;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Skargi", mappedBy="przepis")
+     * @ORM\OneToMany(targetEntity="App\Entity\Skargi", mappedBy="przepis",  orphanRemoval=true)
      */
     private $skargi;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Komentarze", mappedBy="przepis")
+     * @ORM\OneToMany(targetEntity="App\Entity\Komentarze", mappedBy="przepis",  orphanRemoval=true)
      */
     private $komentarze;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Zdjecia", mappedBy="przepis")
+     * @ORM\OneToMany(targetEntity="App\Entity\Zdjecia", mappedBy="przepis",  orphanRemoval=true)
      */
     private $zdjecie;
 
     /**
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Kategorie", inversedBy="przepis")
      * @ORM\JoinColumn(nullable=false)
      */
     private $kategoria;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\PrzepisySkladniki", mappedBy="przepis", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="App\Entity\PrzepisySkladniki", mappedBy="przepis",  orphanRemoval=true)
      */
     private $skladnik;
 
@@ -82,6 +93,7 @@ class Przepisy
     {
         $this->ulubione = new ArrayCollection();
         $this->komentarze = new ArrayCollection();
+        $this->autor= new ArrayCollection();
         $this->zdjecie = new ArrayCollection();
         $this->kategoria = new ArrayCollection();
         $this->skladnik = new ArrayCollection();
@@ -97,9 +109,10 @@ class Przepisy
         return $this->id;
     }
 
-    /**Getter for Tresc
+    /**
+     * Getter for Tresc
      *
-     * @return string|null Tresc
+     * @return string|null tresc
      */
 
     public function getTresc(): ?string
@@ -107,39 +120,63 @@ class Przepisy
         return $this->tresc;
     }
 
-    /**Setter for Tresc
+    /**
+     * Setter for tresc
      *
-     *  @param Przepisy|null $tresc Tresc
+     * @param string $tresc Tresc
      * @return Przepisy
      */
-    public function setTresc(?Przepisy $tresc): self
+    public function setTresc(?string $tresc): self
     {
         $this->tresc = $tresc;
 
         return $this;
     }
+    /**
+     * Getter for Tytul
+     *
+     * @return string|null tytul
+     */
 
+    public function getTytul(): ?string
+    {
+        return $this->tytul;
+    }
+
+    /**
+     * Setter for tytul
+     *
+     * @param string $tytul Tytul
+     * @return Przepisy
+     */
+    public function setTytul(?string $tytul): self
+    {
+        $this->tytul = $tytul;
+
+        return $this;
+    }
     /**
      * Getter for Autor
      *
-     * @return Uzytkownicy|null autor
+     *
      */
-    public function getAutor(): ?Uzytkownicy
+    public function getAutor()
     {
         return $this->autor;
     }
 
     /**
      * Setter for Autor
-     * @param Uzytkownicy|null $autor Autor
+     *
      * @return Przepisy
      */
-    public function setAutor(?Uzytkownicy $autor): self
+    public function setAutor($autor): self
     {
         $this->autor = $autor;
 
         return $this;
     }
+
 
     /**
      * @return Collection|Ulubione[]
@@ -292,45 +329,22 @@ class Przepisy
     }
 
     /**
-     * @return Collection|Kategorie[]
+     *
      */
-    public function getKategoria(): Collection
+    public function getKategoria()
     {
         return $this->kategoria;
     }
 
     /**
-     * Add
+     * Setter do Kategorie
      *
-     * @param Kategorie $kategorie Kategorie
+     * @param Kategorie|null $kategorie Kategorie
      * @return Przepisy
      */
-    public function addKategorie(Kategorie $kategorie): self
+    public function setKategoria(?Kategorie $kategorie): self
     {
-        if (!$this->kategoria->contains($kategorie)) {
-            $this->kategoria[] = $kategorie;
-            $kategorie->setPrzepis($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove
-     *
-     * @param Kategorie $kategorie Kategorie
-     * @return Przepisy
-     */
-    public function removeKategorie(Kategorie $kategorie): self
-    {
-        if ($this->kategoria->contains($kategorie)) {
-            $this->kategoria->removeElement($kategorie);
-            // set the owning side to null (unless already changed)
-            if ($kategorie->getPrzepis() === $this) {
-                $kategorie->setPrzepis(null);
-            }
-        }
-
+        $this->kategoria = $kategorie;
         return $this;
     }
 
