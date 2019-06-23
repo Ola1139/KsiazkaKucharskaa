@@ -8,10 +8,13 @@ namespace App\Controller;
 use App\Entity\Przepisy;
 use App\Entity\Skladniki;
 use App\Entity\Uzytkownicy;
-use App\Entity\Dane;
+use App\Entity\User;
 use App\Entity\PrzepisySkladniki;
+use App\Form\Model\ChangePassword;
 use App\Form\PrzepisyType;
 use App\Form\UzytkownicyType;
+use App\Form\ZmianaHaslaType;
+use App\Repository\UserRepository;
 use App\Repository\PrzepisyRepository;
 use App\Repository\PrzepisySkladnikiRepository;
 use App\Repository\UzytkownicyRepository;
@@ -25,7 +28,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Security;
 
 
 /**
@@ -238,7 +242,8 @@ class PanelUzytkownikaController extends AbstractController
     /**
      * View Data action.
      *
-     * @param \App\Entity\Dane $dane Dane
+     * @param \App\Entity\User $user User
+     * @param \App\Entity\User $user User
      * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
      * @param \App\Repository\UzytkownicyRepository            $repository Repository
      * @param \Knp\Component\Pager\PaginatorInterface   $paginator  Paginator
@@ -302,6 +307,44 @@ class PanelUzytkownikaController extends AbstractController
             [
                 'form' => $form->createView(),
                 'uzytkownicy' => $uzytkownicy,
+            ]
+        );
+    }
+
+    /**
+     * Change password action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param \App\Repository\UserRepository $repository User repository
+     * @param \Symfony\Component\Security\Core\Security $security Security
+     * @param \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $passwordEncoder Password encoder
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @Route(
+     *      "/zmiana_hasla",
+     *      name="change_password",
+     *      methods={"GET", "PUT"},
+     * )
+     *
+     */
+    public function zmianaHasla(Request $request, UserRepository $repository, Security $security, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $user = $security->getUser();
+        $changePassword = new ChangePassword();
+        $form = $this->createForm(ZmianaHaslaType::class, $changePassword, [ 'method' => 'PUT' ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $password = $passwordEncoder->encodePassword($user, $changePassword->getPassword());
+            $user->setPassword($password);
+            $repository->save($user);
+            $this->addFlash('success', 'Change password');
+            return $this->redirectToRoute('data_edit');
+        }
+        return $this->render(
+            'panelUzytkownika/changePassword.html.twig',
+            [
+                'form' => $form->createView(),
             ]
         );
     }

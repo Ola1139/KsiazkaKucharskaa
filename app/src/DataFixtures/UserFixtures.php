@@ -5,14 +5,14 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Dane;
+use App\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * Class DaneFixtures.
+ * Class UserFixtures.
  */
-class DaneFixtures extends AbstractBaseFixtures
+class UserFixtures extends AbstractBaseFixtures
 {
     /**
      * Password encoder.
@@ -39,7 +39,7 @@ class DaneFixtures extends AbstractBaseFixtures
     public function loadData(ObjectManager $manager): void
     {
         $this->createMany(10, 'users', function ($i) {
-            $user = new Dane();
+            $user = new User();
             $user->setEmail(sprintf('user%d@example.com', $i));
            $user ->setRoles(['ROLE_USER']);
             $user->setPassword($this->passwordEncoder->encodePassword(
@@ -51,7 +51,7 @@ class DaneFixtures extends AbstractBaseFixtures
         });
 
         $this->createMany(3, 'admins', function ($i) {
-            $user = new Dane();
+            $user = new User();
             $user->setEmail(sprintf('admin%d@example.com', $i));
             $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
             $user->setPassword($this->passwordEncoder->encodePassword(

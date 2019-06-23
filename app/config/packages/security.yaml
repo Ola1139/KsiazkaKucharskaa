@@ -1,13 +1,13 @@
 security:
     encoders:
-        App\Entity\Dane:
+        App\Entity\User:
             algorithm: bcrypt
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
-                class: App\Entity\Dane
+                class: App\Entity\User
                 property: email
 
     role_hierarchy:
@@ -49,4 +49,5 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/stronaglowna, roles: IS_AUTHENTICATED_ANONYMOUSLY}
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: ^/rejestracja, roles: IS_AUTHENTICATED_ANONYMOUSLY}
         - { path: ^/, roles: ROLE_USER}

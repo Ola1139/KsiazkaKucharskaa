@@ -10,13 +10,12 @@ use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Dane
+ * Class User
  *
- * @ORM\Entity(repositoryClass="App\Repository\DaneRepository")
- *
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  *
  */
-class Dane implements UserInterface
+class User implements UserInterface
 {
     /**
      * Use constants to define configuration options that rarely change instead
@@ -72,7 +71,7 @@ class Dane implements UserInterface
      *     max="255",
      * )
      *
-     * @SecurityAssert\UserPassword
+     *
      */
     private $haslo;
 
@@ -81,7 +80,7 @@ class Dane implements UserInterface
      *
      * @var int
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Uzytkownicy", mappedBy="dane", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Uzytkownicy", mappedBy="user", cascade={"persist", "remove"})
      */
     private $uzytkownicy;
 
@@ -117,7 +116,7 @@ class Dane implements UserInterface
     /**Setter for email
      *
      * @param string $email Email
-     * @return Dane
+     * @return User
      */
     public function setEmail(string $email): self
     {
@@ -139,7 +138,7 @@ class Dane implements UserInterface
     /**
      * Setter for Haslo
      * @param string $haslo Haslo
-     * @return Dane
+     * @return User
      */
     public function setPassword(string $haslo): self
     {
@@ -180,15 +179,15 @@ class Dane implements UserInterface
      * Setter for uzytkownicy
      *
      * @param Uzytkownicy $uzytkownicy uzytkownicy
-     * @return Dane
+     * @return User
      */
     public function setUzytkownicy(Uzytkownicy $uzytkownicy): self
     {
         $this->uzytkownicy = $uzytkownicy;
 
         // set the owning side of the relation if necessary
-        if ($this !== $uzytkownicy->getDane()) {
-            $uzytkownicy->setDane($this);
+        if ($this !== $uzytkownicy->getUser()) {
+            $uzytkownicy->setUser($this);
         }
 
         return $this;
@@ -223,7 +222,7 @@ class Dane implements UserInterface
      *
      * @see UserInterface
      *
-     * @return string User name
+     * @return string Username
      */
     public function getUsername(): string
     {

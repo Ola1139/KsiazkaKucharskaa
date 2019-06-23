@@ -78,10 +78,10 @@ class Uzytkownicy
     private $o_sobie;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Dane", inversedBy="uzytkownicy", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="uzytkownicy", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $dane;
+    private $user;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Komentarze", mappedBy="autor")
@@ -107,7 +107,7 @@ class Uzytkownicy
     public function __construct()
     {
         $this->komentarze = new ArrayCollection();
-        $this->dane = new ArrayCollection();
+        $this->user = new ArrayCollection();
         $this->przepisy = new ArrayCollection();
         $this->ulubione = new ArrayCollection();
         $this->skarga = new ArrayCollection();
@@ -260,24 +260,24 @@ class Uzytkownicy
     }
 
     /**
-     * Getter for Dane
+     * Getter for User
      *
-     * @return Dane|null IdDane
+     * @return User|null User
      */
-    public function getDane(): ?Dane
+    public function getUser(): ?User
     {
-        return $this->dane;
+        return $this->user;
     }
 
     /**
-     * Setter for Dane
+     * Setter for User
      *
-     * @param Dane $dane Dane
+     * @param User $user User
      * @return Uzytkownicy
      */
-    public function setDane(Dane $dane): self
+    public function setUser(User $user): self
     {
-        $this->dane = $dane;
+        $this->user = $user;
 
         return $this;
     }

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.register'|trans}}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.register'|trans}}</h1>
+    {{ form_start(form, { method: 'POST', action: url('registration') }) }}
+    {{ form_widget(form) }}
+
+    <div class="form-group row float-sm-right">
+        <input type="submit" value="{{ 'action.save'|trans }}" class="btn btn-primary" />
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

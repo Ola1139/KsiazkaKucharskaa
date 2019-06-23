@@ -8,7 +8,7 @@ namespace App\Controller;
 use App\Entity\Przepisy;
 use App\Entity\Skladniki;
 use App\Entity\Uzytkownicy;
-use App\Entity\Dane;
+use App\Entity\User;
 use App\Entity\PrzepisySkladniki;
 use App\Form\PrzepisyType;
 use App\Repository\PrzepisyRepository;
@@ -73,7 +73,7 @@ class PrzepisController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-         $przepisy->setAutor($this->getUser()->getUzytkownicy());
+            $przepisy->setAutor($this->getUser()->getUzytkownicy());
         $repository->save($przepisy);
 
             $this->addFlash('success', 'message.created_successfully');
