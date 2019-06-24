@@ -16,6 +16,7 @@ use App\Repository\PrzepisySkladnikiRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\TextType;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -108,11 +109,11 @@ class PrzepisController extends AbstractController
      */
     public function edit(Request $request, Przepisy $przepisy, PrzepisyRepository $repository): Response
     {
-        if ($przepisy->getAutor() !== $this->getUser()->getUzytkownicy()) {
-            $this->addFlash('warning', 'message.item_not_found');
-
-            return $this->redirectToRoute('stronaglowna_index');
-        }
+//        if ($przepisy->getAutor() !== $this->getUser()->getUzytkownicy()) {
+//            $this->addFlash('warning', 'message.item_not_found');
+//
+//            return $this->redirectToRoute('stronaglowna_index');
+//        }
 
         $originalSkladniki = new ArrayCollection();
 
@@ -158,14 +159,19 @@ class PrzepisController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="przepis_delete",
      * )
+     *
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="przepisy",
+     * )
      */
     public function delete(Request $request, Przepisy $przepisy, PrzepisyRepository $repository): Response
     {
-        if ($przepisy->getAutor() !== $this->getUser()->getUzytkownicy() ) {
-            $this->addFlash('warning', 'message.item_not_found');
-
-            return $this->redirectToRoute('stronaglowna_index');
-        }
+//        if ($przepisy->getAutor() !== $this->getUser()->getUzytkownicy() ) {
+//            $this->addFlash('warning', 'message.item_not_found');
+//
+//            return $this->redirectToRoute('stronaglowna_index');
+//        }
         $form = $this->createForm(FormType::class, $przepisy, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
