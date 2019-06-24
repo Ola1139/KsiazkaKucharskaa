@@ -53,18 +53,14 @@ class PanelUzytkownikaController extends AbstractController
      *     "/",
      *     name="profil_index",
      * )
+     *
+     *
      */
     public function index(Request $request, PrzepisyRepository $repository, PaginatorInterface $paginator): Response
     {
-        $pagination = $paginator->paginate(
-            $repository->queryAll(),
-            $request->query->getInt('page', 1),
-            Przepisy::NUMBER_OF_ITEMS
-        );
 
         return $this->render(
-            'panelUzytkownika/index.html.twig',
-            ['pagination' => $pagination]
+            'panelUzytkownika/index.html.twig'
         );
     }
     /**
@@ -85,14 +81,20 @@ class PanelUzytkownikaController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="przepis_edit",
      * )
+     *
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="przepisy",
+     *     message="You can not edit"
+     * )
      */
     public function edit(Request $request, Przepisy $przepisy, PrzepisyRepository $repository): Response
     {
-        if ($przepisy->getAutor() !== $this->getUser()->getUzytkownicy()) {
-            $this->addFlash('warning', 'message.item_not_found');
-
-            return $this->redirectToRoute('przepis_view');
-        }
+//        if ($przepisy->getAutor() !== $this->getUser()->getUzytkownicy()) {
+//            $this->addFlash('warning', 'message.item_not_found');
+//
+//            return $this->redirectToRoute('przepis_view');
+//        }
 
         $originalSkladniki = new ArrayCollection();
 
@@ -138,14 +140,21 @@ class PanelUzytkownikaController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="przepis_delete",
      * )
+     *
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="przepisy",
+     *     message="You can not delete"
+     * )
+     *
      */
     public function delete(Request $request, Przepisy $przepisy, PrzepisyRepository $repository): Response
     {
-        if ($przepisy->getAutor() !== $this->getUser()->getUzytkownicy()) {
-            $this->addFlash('warning', 'message.item_not_found');
-
-            return $this->redirectToRoute('stronaglowna_index');
-        }
+//        if ($przepisy->getAutor() !== $this->getUser()->getUzytkownicy()) {
+//            $this->addFlash('warning', 'message.item_not_found');
+//
+//            return $this->redirectToRoute('stronaglowna_index');
+//        }
         $form = $this->createForm(FormType::class, $przepisy, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
@@ -219,7 +228,11 @@ class PanelUzytkownikaController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      *
-     *
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="przepisy",
+     *     message="You can not delete"
+     * )
      *
      */
     public function view(Przepisy $przepisy): Response
@@ -255,6 +268,9 @@ class PanelUzytkownikaController extends AbstractController
      *     name="mojedane_view",
      * )
      *
+     *  @IsGranted(
+     *     "LOG",
+     * )
      *
      */
     public function viewData(): Response
@@ -286,6 +302,11 @@ class PanelUzytkownikaController extends AbstractController
      *     methods={"GET", "PUT"},
      *     name="data_edit",
      * )
+     *
+     * @IsGranted(
+     *     "LOG",
+     * )
+     *
      */
     public function editData(UzytkownicyRepository $repository, Request $request): Response
     {

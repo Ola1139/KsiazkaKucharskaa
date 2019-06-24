@@ -106,6 +106,12 @@ class PrzepisController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="przepis_edit",
      * )
+     *
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="przepisy",
+     *     message="You can not edit"
+     * )
      */
     public function edit(Request $request, Przepisy $przepisy, PrzepisyRepository $repository): Response
     {
@@ -163,7 +169,10 @@ class PrzepisController extends AbstractController
      * @IsGranted(
      *     "MANAGE",
      *     subject="przepisy",
+     *     message="You can not delete"
      * )
+     *
+     *
      */
     public function delete(Request $request, Przepisy $przepisy, PrzepisyRepository $repository): Response
     {

@@ -1,19 +1,19 @@
 <?php
 /**
- * Przepisy voter.
+ * User voter.
  */
 namespace App\Security\Voter;
 
-use App\Entity\Przepisy;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Class PrzepisyVoter.
+ * Class UserVoter.
  */
-class PrzepisyVoter extends Voter
+class UserVoter extends Voter
 {
     /**
      * Security helper.
@@ -42,8 +42,8 @@ class PrzepisyVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        return in_array($attribute, ['MANAGE'])
-            && $subject instanceof Przepisy;
+        return in_array($attribute, ['LOG'])
+            && $subject instanceof User;
     }
 
     /**
@@ -65,9 +65,9 @@ class PrzepisyVoter extends Voter
         }
 
         switch ($attribute) {
-            case 'MANAGE':
+            case 'LOG':
                 // this is the author!
-                if ($subject->getAutor()->getUser() == $user || $user->getRoles() == ['ROLE_USER','ROLE_ADMIN']) {
+                if ($subject->getUser() == $user) {
                     return true;
                 }
                 break;
