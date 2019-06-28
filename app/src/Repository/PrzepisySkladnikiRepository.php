@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\PrzepisySkladniki;
+use App\Entity\Skladniki;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -17,6 +18,19 @@ class PrzepisySkladnikiRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, PrzepisySkladniki::class);
+    }
+    /**
+     * Save record.
+     *
+     * @param \App\Entity\PrzepisySkladniki $skladniki PrzepisySkladniki entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save(PrzepisySkladniki $przepisySkladniki): void
+    {
+        $this->_em->persist($przepisySkladniki);
+        $this->_em->flush($przepisySkladniki);
     }
 
     /**

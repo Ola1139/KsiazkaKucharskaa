@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ZdjeciaRepository")
+ *
  */
 class Zdjecia
 {
@@ -26,7 +28,9 @@ class Zdjecia
      *
      * @var string
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true,)
+     *
+     *
      */
     private $nazwaZdjecia;
 
@@ -58,7 +62,7 @@ class Zdjecia
 
     public function getNazwaZdjecia(): ?string
     {
-        return $this->nazwaZdjeciadjecia;
+        return $this->nazwaZdjecia;
     }
 
     /**

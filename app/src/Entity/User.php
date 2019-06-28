@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -13,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class User
  *
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- *
+ * @UniqueEntity(fields="email", message="Email already taken")
  */
 class User implements UserInterface
 {
@@ -91,6 +92,12 @@ class User implements UserInterface
      * @ORM\Column(type="array")
      */
     private $roles = [];
+
+    public function __construct()
+    {
+        $this->uzytkownicy = new ArrayCollection();
+
+    }
 
     /**
      * Getter fo Id
@@ -170,7 +177,7 @@ class User implements UserInterface
      *
      * @return Uzytkownicy|null uzytkownicy
      */
-    public function getUzytkownicy(): ?Uzytkownicy
+    public function getUzytkownicy()
     {
         return $this->uzytkownicy;
     }
@@ -181,7 +188,7 @@ class User implements UserInterface
      * @param Uzytkownicy $uzytkownicy uzytkownicy
      * @return User
      */
-    public function setUzytkownicy(Uzytkownicy $uzytkownicy): self
+    public function setUzytkownicy($uzytkownicy): self
     {
         $this->uzytkownicy = $uzytkownicy;
 

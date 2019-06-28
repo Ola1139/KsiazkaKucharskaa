@@ -9,19 +9,21 @@
     {% if przepis is defined and przepis|length %}
         <dl class="dl-horizontal">
 
-            <dt>{{ 'label.tresc'|trans }}</dt>
+            <dt>{{ 'label.contents'|trans }}</dt>
             <dd>{{ przepis.tresc }}</dd>
-            <dt>{{ 'autor' }}</dt>
+            <dt>{{ 'label.author' }}</dt>
             <dd>{{ autor }}</dd>
 
         </dl>
 
+        <a href="{{ url('przepis_delete', {id: przepis.id}) }}" title="{{ 'delete'|trans }}">
+            {{ 'delete'|trans }} </a>
+        <a href="{{ url('przepis_edit', {id: przepis.id}) }}" title="{{ 'edit'|trans }}">
+            {{ 'edit'|trans }} </a>
 
     {% else %}
         <p>
             {{ 'message.item_not_found'|trans }}
         </p>
     {% endif %}
-
-
 {% endblock %}

@@ -22,11 +22,11 @@
             <tbody>
             {% for dane in pagination %}
                 <tr>
-                    <td>{{ dane.tytul }}</td>
+                    <td>{{ dane.email }}</td>
 
                     <td>
-                        <a href="{{ url('przepis_view', {id: dane.id}) }}" title="{{ 'see_more'|trans }}">
-                            {{ 'see_more'|trans }}
+                        <a href="" title="{{ 'see_more'|trans }}">
+                            {{ 'view'|trans }}
                         </a>
                     </td>
                 </tr>

@@ -85,7 +85,7 @@ class Przepisy
     private $kategoria;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\PrzepisySkladniki", mappedBy="przepis",  orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\PrzepisySkladniki", mappedBy="przepis",  orphanRemoval=true,  cascade={"persist"})
      */
     private $skladnik;
 
@@ -348,10 +348,8 @@ class Przepisy
         return $this;
     }
 
-    /**
-     * @return Collection|Skladniki[]
-     */
-    public function getSkladnik(): Collection
+
+    public function getSkladnik()
     {
         return $this->skladnik;
     }
@@ -362,10 +360,11 @@ class Przepisy
      * @param Skladniki $Skladnik Skladnik
      * @return Przepisy
      */
-    public function addSkladnik(Skladniki $Skladnik): self
+    public function addSkladnik( $skladnik): self
     {
-        if (!$this->skladnik->contains($Skladnik)) {
-            $this->skladnik[] = $Skladnik;
+        if (!$this->skladnik->contains($skladnik)) {
+            $this->skladnik[] = $skladnik;
+
         }
 
         return $this;
@@ -377,7 +376,7 @@ class Przepisy
      * @param Skladniki $Skladnik Skladnik
      * @return Przepisy
      */
-    public function removeSkladnik(Skladniki $Skladnik): self
+    public function removeSkladnik($Skladnik): self
     {
         if ($this->skladnik->contains($Skladnik)) {
             $this->skladnik->removeElement($Skladnik);
@@ -386,5 +385,10 @@ class Przepisy
         return $this;
     }
 
+    public function setSkladnik( $przepisy): self
+    {
+        $this->skladnik = $przepisy;
 
+        return $this;
+    }
 }

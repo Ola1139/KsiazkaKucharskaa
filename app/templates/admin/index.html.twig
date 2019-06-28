@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.dane_list'|trans }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.admin_panel'|trans }}</h1>
+
+
+    <div>
+
+        <a href="{{ path('users_admin') }}">Zarzadzaj uzytkownikami</a>
+        <a href="{{ path('przepisy_admin') }}" title="{{ 'mine_data'|trans }}"> Zarządzaj przepisami</a>
+
+    </div>
+
+
+
+{% endblock %}

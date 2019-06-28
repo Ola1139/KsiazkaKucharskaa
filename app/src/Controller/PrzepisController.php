@@ -5,14 +5,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Komentarze;
 use App\Entity\Przepisy;
 use App\Entity\Skladniki;
 use App\Entity\Uzytkownicy;
 use App\Entity\User;
 use App\Entity\PrzepisySkladniki;
+use App\Form\PrzepisySkladnikiType;
 use App\Form\PrzepisyType;
+use App\Form\SkladnikiType;
 use App\Repository\PrzepisyRepository;
 use App\Repository\PrzepisySkladnikiRepository;
+use App\Repository\SkladnikiRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\TextType;
 use Knp\Component\Pager\PaginatorInterface;
@@ -50,44 +54,143 @@ class PrzepisController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="przepis_new",
      * )
+     *
+     *  @IsGranted(
+     *     "IS_AUTHENTICATED_REMEMBERED",
+     *     message="You can not add"
+     * )
      */
     public function new(Request $request, PrzepisyRepository $repository): Response
     {
-            $przepisy = new Przepisy();
-//        $przepisy = $entityManager->getRepository(Przepisy::class)->find($id);
-//        foreach ($przepisy as $skladniki) {
-//            $skladniki = new Skladniki();
-//            var_dump($przepisy->getSkladnik());
-//            $skladniki->setNazwa($przepisy->getSkladnik());
-//            $przepisy->getSkladnik()->add($skladniki->getNazwa());
-//        }
+            $przepis = new Przepisy();
+//            $przepis = new Przepisy();
+//            $skladnik = new Skladniki();
+//            $przepis->setTresc("lalalal");
+//            $skladnik->setNazwa('aaaaa');
+//            $przepis->setTytul('tytul');
+//            $przepisySkladniki->setPrzepis($przepis);
+//            //$przepisySkladniki->setSkladnik($skladnik);
 
+        $form = $this->createForm(PrzepisyType::class, $przepis);
 
-//        $tag1 = new Skladniki();
-//        $tag1->setNazwa('tag1');
-//        $przepisy->getSkladnik()->add($tag1);
-//        $tag2 = new Skladniki();
-//        $tag2->setNazwa('tag2');
-//        $przepisy->getSkladnik()->add($tag2);
-
-        $form = $this->createForm(PrzepisyType::class, $przepisy);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $przepisy->setAutor($this->getUser()->getUzytkownicy());
-        $repository->save($przepisy);
+             if ($form->isSubmitted() && $form->isValid()) {
+            $przepis->setAutor($this->getUser()->getUzytkownicy());
 
-            $this->addFlash('success', 'message.created_successfully');
 
-            return $this->redirectToRoute('stronaglowna_index');
+           // $przepisySkladniki->setIloscSkladnika('3');
+
+           // $przepisy->getSkladnik($skladniki->getPrzepisy());
+             $repository->save($przepis);
+
+            return $this->redirectToRoute('skladniki_new',['idPrzep'=>$przepis->getId()]);
         }
 
        return $this->render(
            'przepis/new.html.twig',
            ['form' => $form->createView()]
         );
+
+
+
+ }
+
+    /**
+     * New Skladnik action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param \App\Repository\PrzepisyRepository           $repository Task repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/newSkladniki/{idPrzepisu}",
+     *     methods={"GET", "POST"},
+     *     requirements={"idPrzepisu": "[1-9]\d*"},
+     *     name="skladniki_new",
+     * )
+     *
+     *  @IsGranted(
+     *     "IS_AUTHENTICATED_REMEMBERED",
+     *     message="You can not add"
+     * )
+     */
+    public function newSkladnik(Request $request, SkladnikiRepository $repository, $idPrzepisu): Response
+    {
+        $skladnik = new Skladniki();
+
+        $form = $this->createForm(SkladnikiType::class, $skladnik);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $repository->save($skladnik);
+
+            return $this->redirectToRoute('skladniki_add',['id'=>$skladnik->getId()],['idPrzepisu'=>$idPrzepisu]);
+        }
+
+        return $this->render(
+            'przepis/newPrzepis.html.twig',
+            ['form' => $form->createView()]
+        );
+
+
+
     }
 
+    /**
+     * Add Skladnik action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param \App\Repository\PrzepisyRepository           $repository Task repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/addSkladniki/{id}/{idPrzepisu}",
+     *     methods={"GET", "POST"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="skladniki_add",
+     * )
+     *
+     *  @IsGranted(
+     *     "IS_AUTHENTICATED_REMEMBERED",
+     *     message="You can not add"
+     * )
+     */
+    public function addSkladnik(Request $request, PrzepisySkladnikiRepository $repository, $id, $idPrzepisu): Response
+    {
+        $Pzepisyskladniki = new PrzepisySkladniki();
+        $form = $this->createForm(PrzepisySkladnikiType::class, $Pzepisyskladniki);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $Pzepisyskladniki->setSkladnik($id);
+            $Pzepisyskladniki->setPrzepis($idPrzepisu);
+            $repository->save($Pzepisyskladniki);
+
+
+            $this->addFlash('success', 'message.created_successfully');
+
+            return $this->redirectToRoute('skladniki_new');
+        }
+
+        return $this->render(
+            'przepis/addSkladnik.html.twig',
+            ['form' => $form->createView(), 'id'=>$request->get('id')]
+        );
+
+
+    }
     /**
      * Edit action.
      *
@@ -113,33 +216,26 @@ class PrzepisController extends AbstractController
      *     message="You can not edit"
      * )
      */
-    public function edit(Request $request, Przepisy $przepisy, PrzepisyRepository $repository): Response
+    public function edit(Request $request, Przepisy $przepisy, PrzepisyRepository $repository, $id): Response
     {
 //        if ($przepisy->getAutor() !== $this->getUser()->getUzytkownicy()) {
 //            $this->addFlash('warning', 'message.item_not_found');
 //
 //            return $this->redirectToRoute('stronaglowna_index');
 //        }
-
         $originalSkladniki = new ArrayCollection();
-
         foreach ($przepisy->getSkladnik() as $skladnik) {
             $originalSkladniki->add($skladnik);
         }
         $form = $this->createForm(PrzepisyType::class, $przepisy, ['method' => 'PUT']);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-
             $repository->save($przepisy);
-
             $this->addFlash('success', 'message.updated_successfully');
-
             return $this->redirectToRoute('stronaglowna_index');
         }
-
         return $this->render(
-            'przepis/editData.html.twig',
+            'przepis/edit.html.twig',
             [
                 'form' => $form->createView(),
                 'przepis' => $przepisy,
@@ -204,6 +300,4 @@ class PrzepisController extends AbstractController
             ]
         );
     }
-
-
-}
+   }

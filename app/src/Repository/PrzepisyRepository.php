@@ -106,6 +106,26 @@ class PrzepisyRepository extends ServiceEntityRepository
         return $queryBuilder;
     }
 
+    /**
+     * Query tasks by autor
+     *
+     * @param \App\Entity\Uzytkownicy|null $uzytkownicy Uzytkownicy entity
+     *
+     * @return \Doctrine\ORM\QueryBuilder Query builder
+     */
+    public function queryByTitle(Przepisy $title = null): QueryBuilder
+    {
+
+        $queryBuilder =$this->queryAll() ;
+
+        if (!is_null($title)) {
+            $queryBuilder->andWhere('t.tytul = :tytul')
+                ->setParameter('tytul', $title);
+        }
+
+        return $queryBuilder;
+    }
+
 
 
     /*

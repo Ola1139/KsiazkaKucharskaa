@@ -58,7 +58,7 @@ class UserVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
-        $user = $token->getUser();
+        $user = $token->getUser()->getEmail();
         // if the user is anonymous, do not grant access
         if (!$user instanceof UserInterface) {
             return false;
@@ -67,7 +67,7 @@ class UserVoter extends Voter
         switch ($attribute) {
             case 'LOG':
                 // this is the author!
-                if ($subject->getUser() == $user) {
+                if ($subject->getEmail() == $user) {
                     return true;
                 }
                 break;

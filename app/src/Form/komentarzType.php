@@ -1,22 +1,18 @@
 <?php
 /**
- * Rejestracja type.
+ * Comment Type.
  */
 namespace App\Form;
-use App\Entity\User;
-use App\Repository\UserRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Komentarze;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
- * Class RejestracjaType.
+ * Class CommentType.
  */
-class RejestracjaType extends AbstractType
+class komentarzType extends AbstractType
 {
     /**
      * Builds the form.
@@ -31,16 +27,22 @@ class RejestracjaType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('email');
-        $builder->add('password', RepeatedType::class, [
-            'type' => PasswordType::class,
-            'first_options'  => ['label' => 'Password'],
-            'second_options' => ['label' => 'Repeat Password'],
-        ]);
-        $builder->add('uzytkownicy', CollectionType::class, [
-            'entry_type' => DaneType::class,
-            'entry_options' => ['label' => false],
-        ]);
+        $builder->add(
+            'tresc',
+            TextType::class,
+            [
+                'label' => 'Treść komentarza',
+                'required' => true,
+                'attr' => ['max_length' => 150],
+            ]
+        );
+        $builder->add(
+            'announcement',
+            HiddenType::class,
+            [
+                'data'=>$options['id']
+            ]
+        );
     }
     /**
      * Configures the options for this type.
@@ -49,7 +51,8 @@ class RejestracjaType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => User::class]);
+        $resolver->setDefaults(['data_class' => Komentarze::class, 'id'=>0]);
+        $resolver->addAllowedTypes('id',['int']);
     }
     /**
      * Returns the prefix of the template block name for this type.
@@ -61,6 +64,6 @@ class RejestracjaType extends AbstractType
      */
     public function getBlockPrefix(): string
     {
-        return 'user';
+        return 'komentarz';
     }
 }

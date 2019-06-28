@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title.register'|trans}}
+    {{ 'title.skladniki'|trans}}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.register'|trans}}</h1>
-    {{ form_start(form, { method: 'POST', action: url('przepis_new') }) }}
+    <h1>{{ 'title.skladniki'|trans}}</h1>
+    {{ form_start(form, { method: 'POST', action: url('skladniki_new', {'id':id}) }) }}
     {{ form_widget(form) }}
 
     <div class="form-group row float-sm-right">

@@ -51,18 +51,18 @@ class JednostkiMiary
      */
     public function getNazwaJednostkiMiary(): ?string
     {
-        return $this->nazwa_jednostki_miary;
+        return $this->nazwaJednostkiMiary;
     }
 
     /**
      * Setter for Nazwa Jednostki Miary
      *
-     * @param string $nazwa_jednostki_miary
+     * @param string $nazwaJednostkiMiary
      * @return JednostkiMiary
      */
-    public function setNazwaJednostkiMiary(string $nazwa_jednostki_miary): self
+    public function setNazwaJednostkiMiary(string $nazwaJednostkiMiary): self
     {
-        $this->nazwa_jednostki_miary = $nazwa_jednostki_miary;
+        $this->nazwaJednostkiMiary = $nazwaJednostkiMiary;
 
         return $this;
     }

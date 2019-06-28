@@ -33,7 +33,7 @@ class Skladniki
     private $nazwa;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\PrzepisySkladniki", mappedBy="skladnik",  orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\PrzepisySkladniki", mappedBy="skladnik",  orphanRemoval=true, cascade={"persist"})
      */
     private $przepisy;
 
@@ -57,7 +57,7 @@ class Skladniki
      *
      * @return string|null Nazwa
      */
-    public function getNazwa(): ?string
+    public function getNazwa()
     {
         return $this->nazwa;
     }
@@ -77,7 +77,7 @@ class Skladniki
     /**
      * @return Collection|Przepisy[]
      */
-    public function getPrzepisy(): Collection
+    public function getPrzepisy()
     {
         return $this->przepisy;
     }
@@ -113,6 +113,13 @@ class Skladniki
                 $przepisy->addSkladnik(null);
             }
         }
+
+        return $this;
+    }
+
+    public function setPrzepisy(?PrzepisySkladniki $skladniki): self
+    {
+        $this->przepisy = $skladniki;
 
         return $this;
     }

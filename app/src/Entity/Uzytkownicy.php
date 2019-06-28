@@ -262,9 +262,8 @@ class Uzytkownicy
     /**
      * Getter for User
      *
-     * @return User|null User
      */
-    public function getUser(): ?User
+    public function getUser()
     {
         return $this->user;
     }
@@ -275,7 +274,7 @@ class Uzytkownicy
      * @param User $user User
      * @return Uzytkownicy
      */
-    public function setUser(User $user): self
+    public function setUser( $user): self
     {
         $this->user = $user;
 

@@ -1,4 +1,9 @@
 security:
+
+
+    access_decision_manager:
+            strategy: unanimous
+
     encoders:
         App\Entity\User:
             algorithm: bcrypt
@@ -45,7 +50,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/stronaglowna, roles: IS_AUTHENTICATED_ANONYMOUSLY}
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY}

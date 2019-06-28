@@ -268,8 +268,9 @@ class PanelUzytkownikaController extends AbstractController
      *     name="mojedane_view",
      * )
      *
-     *  @IsGranted(
-     *     "LOG",
+     * @IsGranted(
+     *     "IS_AUTHENTICATED_REMEMBERED",
+     *     message="You can not edit"
      * )
      *
      */
@@ -304,7 +305,8 @@ class PanelUzytkownikaController extends AbstractController
      * )
      *
      * @IsGranted(
-     *     "LOG",
+     *     "IS_AUTHENTICATED_REMEMBERED",
+     *     message="You can not edit"
      * )
      *
      */
@@ -348,6 +350,10 @@ class PanelUzytkownikaController extends AbstractController
      *      methods={"GET", "PUT"},
      * )
      *
+     *  @IsGranted(
+     *     "IS_AUTHENTICATED_REMEMBERED",
+     *     message="You can not edit"
+     * )
      */
     public function zmianaHasla(Request $request, UserRepository $repository, Security $security, UserPasswordEncoderInterface $passwordEncoder)
     {

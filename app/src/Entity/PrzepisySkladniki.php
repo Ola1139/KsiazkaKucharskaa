@@ -55,6 +55,7 @@ class PrzepisySkladniki
     public function __construct()
     {
         $this->JednostkaMiary = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -74,26 +75,72 @@ class PrzepisySkladniki
         return $this;
     }
 
-    public function getPrzepis() : ?int
+    public function getPrzepis()
     {
         return $this->przepis;
     }
 
-    public function setPrzepis(int $Przepis): self
+    public function setPrzepis( $Przepis): self
     {
         $this->Przepis = $Przepis;
 
         return $this;
     }
 
+    public function addPrzepis(Przepisy $przepisy): self
+    {
+        if (!$this->przepis->contains($przepisy)) {
+            $this->przepis[] = $przepisy;
+            $przepisy->setPrzepisy($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrzepis(Przepisy $przepisy): self
+    {
+        if ($this->przepis->contains($przepisy)) {
+            $this->przepis->removeElement($przepisy);
+            // set the owning side to null (unless already changed)
+            if ($przepisy->getSkladnik() === $this) {
+                $przepisy->setSkladnik(null);
+            }
+        }
+
+        return $this;
+    }
+
+
     public function getSkladnik()
     {
         return $this->skladnik;
     }
 
-    public function setSkladnik(int $Skladnik): self
+    public function setSkladnik($skladnik): self
     {
-        $this->Skladnik = $Skladnik;
+        $this->skladnik = $skladnik;
+
+        return $this;
+    }
+    public function addSkladnik(Skladniki $skladniki): self
+    {
+        if (!$this->skladnik->contains($skladniki)) {
+            $this->skladnik[] = $skladniki;
+            $skladniki->setPrzepisy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSkladnik(Skladniki $skladniki): self
+    {
+        if ($this->skladnik->contains($skladniki)) {
+            $this->skladnik->removeElement($skladniki);
+            // set the owning side to null (unless already changed)
+            if ($skladniki->getPrzepisy() === $this) {
+                $skladniki->setPrzepisy(null);
+            }
+        }
 
         return $this;
     }
@@ -101,7 +148,7 @@ class PrzepisySkladniki
     /**
      * @return Collection|JednostkiMiary[]
      */
-    public function getJednostkaMiary(): Collection
+    public function getJednostkaMiary()
     {
         return $this->jednostkaMiary;
     }

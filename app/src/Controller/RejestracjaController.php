@@ -45,7 +45,10 @@ class RejestracjaController extends Controller
         public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         // 1) build the form
-        $user =new User();
+        $user = new User();
+        $name = new Uzytkownicy();
+        $user->getUzytkownicy()->add($name);
+
         $form = $this->createForm(RejestracjaType::class, $user);
 
         // 2) handle the submit (will only happen on POST)
@@ -56,6 +59,7 @@ class RejestracjaController extends Controller
             $password = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
             $user->setRoles(['ROLE_USER']);
+            $user->setUzytkownicy($name);
 
             // 4) save the User!
             $entityManager = $this->getDoctrine()->getManager();
@@ -66,7 +70,7 @@ class RejestracjaController extends Controller
             // maybe set a "flash" success message for the user
             $this->addFlash('success', 'message.register_successfully');
 
-            return $this->redirectToRoute('data_add');
+            return $this->redirectToRoute('security_login');
         }
 
         return $this->render(
@@ -75,46 +79,4 @@ class RejestracjaController extends Controller
         );
     }
 
-    /**
-     * Add Data action.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Uzytkownicy                         $przepisy       Przepis entity
-     * @param \App\Repository\UzytkownicyRepository            $repository Przepis repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     *
-     * @Route(
-     *     "/DodawanieDanych",
-     *     methods={"GET", "POST"},
-     *     name="data_add",
-     * )
-     */
-    public function addData(UzytkownicyRepository $repository, Request $request): Response
-    {
-        $uzytkownicy = new Uzytkownicy();
-        $form = $this->createForm(DaneType::class, $uzytkownicy);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $uzytkownicy->setUser($this->getUser());
-            $repository->save($uzytkownicy);
-
-            $this->addFlash('success', 'message.addData_successfully');
-
-            return $this->redirectToRoute('stronaglowna_index');
-        }
-
-        return $this->render(
-            'rejestracja/addData.html.twig',
-            [
-                'form' => $form->createView()
-            ]
-        );
-    }
-
-}
+  }
