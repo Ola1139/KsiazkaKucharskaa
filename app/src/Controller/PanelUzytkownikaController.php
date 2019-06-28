@@ -244,10 +244,14 @@ class PanelUzytkownikaController extends AbstractController
 
 
         $autor = $przepis->getAutor()->getImie();
+        $tytul = $przepis->getTytul();
+
+        $nazwaKategorii = $przepis->getKategoria()->getNazwaKategorii();
+
 
         return $this->render(
             'panelUzytkownika/view.html.twig',
-            ['przepis' => $przepis, 'autor' => $autor]
+            ['przepis' => $przepis, 'autor' => $autor, 'tytul' => $tytul,  'nazwaKategorii' => $nazwaKategorii]
         );
 
     }

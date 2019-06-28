@@ -113,14 +113,34 @@ class PrzepisyRepository extends ServiceEntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
-    public function queryByTitle(Przepisy $title = null): QueryBuilder
+    public function queryByTitle($title = null): QueryBuilder
     {
 
         $queryBuilder =$this->queryAll() ;
 
         if (!is_null($title)) {
-            $queryBuilder->andWhere('t.tytul = :tytul')
-                ->setParameter('tytul', $title);
+            $queryBuilder->andWhere('t.tytul LIKE :tytul')
+                ->setParameter('tytul','%'.$title.'%');
+        }
+
+        return $queryBuilder;
+    }
+
+    /**
+     * Query tasks by autor
+     *
+     * @param \App\Entity\Uzytkownicy|null $uzytkownicy Uzytkownicy entity
+     *
+     * @return \Doctrine\ORM\QueryBuilder Query builder
+     */
+    public function queryByKategoria($kategoria = null): QueryBuilder
+    {
+
+        $queryBuilder =$this->queryAll() ;
+
+        if (!is_null($kategoria)) {
+            $queryBuilder->andWhere('t.kategoria = :kategoria')
+                ->setParameter('kategoria', $kategoria);
         }
 
         return $queryBuilder;

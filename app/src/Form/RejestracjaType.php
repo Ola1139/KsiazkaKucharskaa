@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -31,11 +32,11 @@ class RejestracjaType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('email');
+        $builder->add('email', EmailType::class, ['label' => 'E-mail']);
         $builder->add('password', RepeatedType::class, [
             'type' => PasswordType::class,
-            'first_options'  => ['label' => 'Password'],
-            'second_options' => ['label' => 'Repeat Password'],
+            'first_options'  => ['label' => 'Hasło'],
+            'second_options' => ['label' => 'Powtórz hasło'],
         ]);
         $builder->add('uzytkownicy', CollectionType::class, [
             'entry_type' => DaneType::class,

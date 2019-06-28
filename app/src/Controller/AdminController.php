@@ -172,10 +172,14 @@ class AdminController extends AbstractController
 
 
         $autor = $przepis->getAutor()->getImie();
+        $tytul = $przepis->getTytul();
+
+        $nazwaKategorii = $przepis->getKategoria()->getNazwaKategorii();
+
 
         return $this->render(
             'admin/view.html.twig',
-            ['przepis' => $przepis, 'autor' => $autor]
+            ['przepis' => $przepis, 'autor' => $autor, 'tytul' => $tytul,  'nazwaKategorii' => $nazwaKategorii]
         );
 
     }
@@ -207,6 +211,111 @@ class AdminController extends AbstractController
         return $this->render(
             'admin/showUser.html.twig',
             ['pagination' => $pagination]
+        );
+    }
+
+    /**
+     * Delete action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param \App\Entity\User                         $przepis       Przepisy entity
+     * @param \App\Repository\UserRepository            $repository Przepisy repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/deleteUser",
+     *     methods={"GET", "DELETE"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="user_delete",
+     * )
+     *
+     * @IsGranted(
+     *     "ROLE_ADMIN",
+     *     message="You can not delete"
+     * )
+     *
+     *
+     */
+    public function deleteUser(Request $request, User $user, UserRepository $repository): Response
+    {
+        $form = $this->createForm(FormType::class, $user, ['method' => 'DELETE']);
+        $form->handleRequest($request);
+
+        if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
+            $form->submit($request->request->get($form->getName()));
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $repository->delete($user);
+            $this->addFlash('success', 'message.deleted_successfully');
+
+            return $this->redirectToRoute('users_admin');
+        }
+
+        return $this->render(
+            'admin/deleteUser.html.twig',
+            [
+                'form' => $form->createView(),
+                'user' => $user
+            ]
+        );
+    }
+
+    /**
+     * Add Admin action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param \App\Entity\User                         $przepis       Przepisy entity
+     * @param \App\Repository\UserRepository            $repository Przepisy repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/AddAdmin",
+     *     methods={"GET", "PUT"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="add_admin",
+     * )
+     *
+     * @IsGranted(
+     *     "ROLE_ADMIN",
+     *     message="You can not delete"
+     * )
+     *
+     *
+     */
+    public function AddAdmin(Request $request, User $user, UserRepository $repository): Response
+    {
+        $form = $this->createForm(FormType::class, $user, ['method' => 'PUT']);
+        $form->handleRequest($request);
+
+        if ($request->isMethod('PUT') && !$form->isSubmitted()) {
+            $form->submit($request->request->get($form->getName()));
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
+            $repository->save($user);
+            $this->addFlash('success', 'message.add_Admin_successfully');
+
+            return $this->redirectToRoute('users_admin');
+        }
+
+        return $this->render(
+            'admin/AddAdmin.html.twig',
+            [
+                'form' => $form->createView(),
+                'user' => $user
+            ]
         );
     }
 }

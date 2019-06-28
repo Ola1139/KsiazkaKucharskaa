@@ -5,14 +5,12 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.customer_panel'|trans }}</h1>
+    <div class="container">
+    <h1>Panel użytkownika</h1>
 
 
-        <div>
-
-            <a href="{{ url('mojprzepis_preview') }}" title="{{ 'mine_recipe'|trans }}">{{ 'mine_recipe'|trans }}</a>
-            <a href="">Moje ulubione przepisy</a>
-            <a href="{{ url('mojedane_view') }}" title="{{ 'mine_data'|trans }}">{{ 'mine_data'|trans }}</a>
+        <a href="{{ url('mojprzepis_preview') }}" title="{{ 'mine_recipe'|trans }}">Moje przepisy</a>
+            <a href="{{ url('mojedane_view') }}" title="{{ 'mine_data'|trans }}">Moje dane</a>
 
         </div>
 

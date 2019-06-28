@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.dane_list'|trans }}</h1>
+    <h1>Przepisy</h1>
     {% if pagination is defined and pagination|length %}
 
         <div class="navigation text-center">
@@ -15,7 +15,7 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>{{ knp_pagination_sortable(pagination, 'przepis'|trans, 't.tresc') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'tytuł'|trans, 't.tresc') }}</th>
                 <th></th>
             </tr>
             </thead>
@@ -26,7 +26,7 @@
 
                     <td>
                         <a href="{{ url('przepis_view_admin', {id: dane.id}) }}" title="{{ 'see_more'|trans }}">
-                            {{ 'see_more'|trans }}
+                           Zobacz więcej
                         </a>
                     </td>
                 </tr>
@@ -40,7 +40,7 @@
 
     {% else %}
         <p>
-            {{ 'message.empty_list'|trans }}
+           Nie znaleziono przepisów
         </p>
     {% endif %}
 

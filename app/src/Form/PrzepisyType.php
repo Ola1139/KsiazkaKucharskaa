@@ -64,7 +64,7 @@ class PrzepisyType extends AbstractType
             'tytul',
             TextType::class,
             [
-                'label' => 'label.title',
+                'label' => 'Tytuł',
                 'required' => true,
                 'attr' => ['max_length' => 255],
             ]
@@ -73,7 +73,7 @@ class PrzepisyType extends AbstractType
             'tresc',
             TextareaType::class,
             [
-                'label' => 'label.contents',
+                'label' => 'Treść',
                 'required' => true,
                 'attr' => ['max_length' => 255],
             ]
@@ -86,7 +86,7 @@ class PrzepisyType extends AbstractType
                 'choice_label' => function ($kategoria) {
                     return $kategoria->getNazwaKategorii();
                 },
-                'label' => 'label.category',
+                'label' => 'Kategoria',
                 'required' => true,
             ]
         );

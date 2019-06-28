@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.dane_list'|trans }}</h1>
+    <h1>Lista przepisów</h1>
     {% if pagination is defined and pagination|length %}
 
         <div class="navigation text-center">
@@ -22,11 +22,11 @@
             <tbody>
             {% for dane in pagination %}
                 <tr>
-                    <td>{{ dane.tresc }}</td>
+                    <td>{{ dane.tytul }}</td>
 
                     <td>
                         <a href="{{ url('mojprzepis_view', {id: dane.id}) }}" title="{{ 'see_more'|trans }}">
-                            {{ 'see_more'|trans }}
+                            Zobacz więcej
                         </a>
                     </td>
                 </tr>
@@ -40,7 +40,7 @@
 
     {% else %}
         <p>
-            {{ 'message.empty_list'|trans }}
+            Nie znaleziono przepisów
         </p>
     {% endif %}
 

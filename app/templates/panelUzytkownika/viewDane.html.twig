@@ -5,24 +5,25 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.data_view'|trans }}</h1>
+    <div class="container">
+    <h1>Moje dane</h1>
 
         <dl class="dl-horizontal">
 
-            <dt>{{ 'label.name'|trans }}</dt>
+            <dt>Imię</dt>
             <dd>{{ uzytkownik.imie }}</dd>
-            <dt>{{ 'label.surname'|trans }}</dt>
+            <dt>Nazwisko</dt>
             <dd>{{ uzytkownik.nazwisko }}</dd>
-            <dt>{{ 'label.hobby'|trans }}</dt>
+            <dt>Zainteresowanie</dt>
             <dd>{{ uzytkownik.zainteresowania }}</dd>
-            <dt>{{ 'label.favoriteCuisine'|trans }}</dt>
+            <dt>Ulubiona Kuchnia</dt>
             <dd>{{ uzytkownik.UlubionaKuchnia }}</dd>
-            <dt>{{ 'label.favoriteDish'|trans }}</dt>
+            <dt>Ulubione danie</dt>
             <dd>{{ uzytkownik.UlubionaPotrawa }}</dd>
-            <dt>{{ 'label.aboutMe'|trans }}</dt>
+            <dt>O mnie</dt>
             <dd>{{ uzytkownik.OSobie }}</dd>
         </dl>
-    <a href="{{ url('data_edit') }}" title="{{ 'edit_data'|trans }}">{{ 'action.edit'|trans }}</a>
-    <a href="{{ url('change_password') }}" title="{{ 'changePassword'|trans }}">{{ 'action.changePassword'|trans }}</a>
-
+    <a href="{{ url('data_edit') }}" title="{{ 'edit_data'|trans }}">Zmień dane</a>
+    <a href="{{ url('change_password') }}" title="{{ 'changePassword'|trans }}">Zmień hasło</a>
+    </div>
 {% endblock %}

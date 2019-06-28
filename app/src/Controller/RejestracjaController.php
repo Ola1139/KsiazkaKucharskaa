@@ -39,7 +39,7 @@ class RejestracjaController extends Controller
      * @Route("/",
      *     name="registration",
      *       methods={"GET", "POST"},
-    )
+   * )
      */
 
         public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{#nie#}
+{% block title %}
+    {{ 'title.data_view'|trans}}) }}
+{% endblock %}
+
+{% block body %}
+    <h1>Uzytkownik</h1>
+
+    <dl class="dl-horizontal">
+
+        <dt>Imię</dt>
+        <dd>{{ uzytkownik.imie }}</dd>
+        <dt>Nazwisko</dt>
+        <dd>{{ uzytkownik.nazwisko }}</dd>
+        <dt>Zainteresowanie</dt>
+        <dd>{{ uzytkownik.zainteresowania }}</dd>
+        <dt>Ulubiona kuchnia</dt>
+        <dd>{{ uzytkownik.UlubionaKuchnia }}</dd>
+        <dt>Ulubione danie</dt>
+        <dd>{{ uzytkownik.UlubionaPotrawa }}</dd>
+        <dt>O sobie</dt>
+        <dd>{{ uzytkownik.OSobie }}</dd>
+    </dl>
+    <a href="" title="{{ 'deleteUser'|trans }}">{{ 'action.deleteUser'|trans }}</a>
+    <a href="" title="{{ 'addAdmin'|trans }}">{{ 'action.addAdmin'|trans }}</a>
+
+{% endblock %}

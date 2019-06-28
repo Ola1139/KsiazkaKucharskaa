@@ -5,13 +5,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Kategorie;
 use App\Entity\Komentarze;
 use App\Entity\Przepisy;
 use App\Entity\PrzepisySkladniki;
 use App\Form\komentarzType;
 use App\Form\PrzepisyType;
+use App\Repository\KategorieRepository;
 use App\Repository\KomentarzeRepository;
 use App\Repository\PrzepisyRepository;
+use Entity\Repository\CategoryRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -84,10 +87,13 @@ class StronaGlownaController extends AbstractController
             ->find($przepisy);
 
         $autor = $przepis->getAutor()->getImie();
+        $tytul = $przepis->getTytul();
+
+        $nazwaKategorii = $przepis->getKategoria()->getNazwaKategorii();
 
         return $this->render(
             'przepis/view.html.twig',
-            ['przepis' => $przepis, 'autor' => $autor]
+            ['przepis' => $przepis, 'autor' => $autor, 'tytul' => $tytul,  'nazwaKategorii' => $nazwaKategorii]
         );
 
     }
@@ -103,7 +109,7 @@ class StronaGlownaController extends AbstractController
      *
      * @Route(
      *     "/wyszukaj",
-     *      methods={"GET", "PUT"},
+     *      methods={"GET", "POST"},
      *     name="przepis_search",
      *
      * )
@@ -111,33 +117,88 @@ class StronaGlownaController extends AbstractController
      *
      *
      */
-    public function search(Przepisy $przepisy, Request $request, PaginatorInterface $paginator, PrzepisyRepository $repository): Response
+    public function searchForm( Request $request, PaginatorInterface $paginator, PrzepisyRepository $repository): Response
     {
-        $przepisy = new Przepisy();
-
-        $form = $this->createForm(SearchType::class, $przepisy, ['method' => 'GET']);
-
-        // 2) handle the submit (will only happen on POST)
+        $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
 
-            $pagination = $paginator->paginate(
-                $repository->queryByTitle($przepisy->getTytul()),
-                $request->query->getInt('page', 1),
-                Przepisy::NUMBER_OF_ITEMS
-            );
+        if ($form->isSubmitted() && $form->isValid()) {
+            $pagination = null;
+            $tytul= $form->getData();
+                $pagination = $paginator->paginate(
+                    $repository->queryByTitle($tytul),
+                    $request->query->getInt('page', 1),
+                    Przepisy::NUMBER_OF_ITEMS
+                );
+
 
             return $this->render(
-                'stronaglowna/search.html.twig',
+                'przepis/searchView.html.twig',
                 ['pagination' => $pagination]
             );
-
         }
+        return $this->render(
+            'przepis/search.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
+   }
+
+    /**
+     * View all kategorie.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param \App\Repository\KategorieRepository            $repository Repository
+     * @param \Knp\Component\Pager\PaginatorInterface   $paginator  Paginator
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @Route("/kategorie", name="category_index")
+     */
+    public function kategorie(Request $request, KategorieRepository $repository, PaginatorInterface $paginator): Response
+    {
 
         return $this->render(
-            'przepis/search.html.twig'
+            'kategorie/kategorie.html.twig',
+            [
+                'data' => $repository->findAll(),
+            ]
         );
     }
+    /**
+     * Kategorie i przepisy
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param \App\Entity\Kategorie kategorie Kategorie
+     * @param \App\Repository\KategorieRepository $repository Type repository
+     * @param \Knp\Component\Pager\PaginatorInterface   $paginator  Paginator
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @Route(
+     *     "/{id}/kategorie",
+     *     name="category_view",
+     *     requirements={"id": "0*[1-9]\d*"},
+     * )
+     */
+    public function viewKategorie(Request $request, Kategorie $category, PrzepisyRepository $repository, PaginatorInterface $paginator, $id): Response
+    {
+        $pagination = null;
+        $pagination = $paginator->paginate(
+            $repository->queryByKategoria($id),
+            $request->query->getInt('page', 1),
+            Przepisy::NUMBER_OF_ITEMS
+        );
+
+
+        return $this->render(
+            'kategorie/kategorieView.html.twig',
+            ['pagination' => $pagination]
+        );
+    }
+
+
 
 
 }

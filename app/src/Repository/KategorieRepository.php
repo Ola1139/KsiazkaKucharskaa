@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Kategorie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -17,6 +18,30 @@ class KategorieRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Kategorie::class);
+    }
+
+    /**
+     * Query by category.
+     *
+     * @return \Doctrine\ORM\QueryBuilder Query builder
+     */
+    public function queryByCategory(int $id): QueryBuilder
+    {
+        return $this->getOrCreateQueryBuilder()
+            ->where('type.kategoria = '.$id)
+            ->orderBy('type.id', 'DESC');
+    }
+
+    /**
+     * Get or create new query builder.
+     *
+     * @param \Doctrine\ORM\QueryBuilder|null $queryBuilder Query builder
+     *
+     * @return \Doctrine\ORM\QueryBuilder Query builder
+     */
+    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    {
+        return $queryBuilder ?: $this->createQueryBuilder('type');
     }
 
     // /**

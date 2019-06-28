@@ -44,7 +44,7 @@ class UzytkownicyType extends AbstractType
         'imie',
         TextType::class,
         [
-            'label' => 'label.name',
+            'label' => 'Imie',
             'required' => true,
             'attr' => ['max_length' => 255],
         ]
@@ -55,7 +55,7 @@ class UzytkownicyType extends AbstractType
             'nazwisko',
             TextType::class,
             [
-                'label' => 'label.surname',
+                'label' => 'Nazwisko',
                 'required' => true,
                 'attr' => ['max_length' => 255],
             ]
@@ -64,7 +64,7 @@ class UzytkownicyType extends AbstractType
             'zainteresowania',
             TextType::class,
             [
-                'label' => 'label.hobby',
+                'label' => 'Hobby',
                 'required' => false,
                 'attr' => ['max_length' => 255],
             ]
@@ -73,7 +73,7 @@ class UzytkownicyType extends AbstractType
             'ulubionaKuchnia',
             TextType::class,
             [
-                'label' => 'label.favoriteCusine',
+                'label' => 'Ulubiona Kuchnia',
                 'required' => false,
                 'attr' => ['max_length' => 255],
             ]
@@ -82,7 +82,7 @@ class UzytkownicyType extends AbstractType
             'ulubionaPotrawa',
             TextType::class,
             [
-                'label' => 'label.favoritedish',
+                'label' => 'Ulubione danie',
                 'required' => false,
 
                 'attr' => ['max_length' => 255],
@@ -93,7 +93,7 @@ class UzytkownicyType extends AbstractType
             'OSobie',
             TextareaType::class,
             [
-                'label' => 'label.OSobie',
+                'label' => 'O sobie',
                 'required' => false,
 
                 'attr' => ['max_length' => 255],

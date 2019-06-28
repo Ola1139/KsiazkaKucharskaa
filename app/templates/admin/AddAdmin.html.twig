@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.przepis_delete'|trans({'%id%': przepis.id|default('')}) }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+    <h1>{{ 'Mianuj admina'|trans({'%id%': przepis.id|default('')}) }}</h1>
+    {{ form_start(form, { method: 'PUT', action: url('add_admin', {id: user.id}) }) }}
+    {{ form_widget(form) }}
+
+        <input type="submit" value="Mianuj admina" class="btn btn-primary" />
+
+
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

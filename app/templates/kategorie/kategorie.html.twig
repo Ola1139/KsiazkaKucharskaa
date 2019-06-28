@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Kategorie
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h1>Kategorie</h1>
+            {% if data is defined and data|length %}
+                <div class="list-group">
+                    {% for category in data %}
+                        <a href="{{ url('category_view',  {'id': category.id}) }}" class="list-group-item list-group-item-action">{{ category.nazwaKategorii }}</a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Brak kategorii.</p>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

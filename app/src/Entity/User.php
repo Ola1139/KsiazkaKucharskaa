@@ -68,7 +68,7 @@ class User implements UserInterface
      *
      * @Assert\NotBlank
      * @Assert\Length(
-     *     min="3",
+     *     min="6",
      *     max="255",
      * )
      *

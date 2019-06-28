@@ -83,8 +83,9 @@ class PrzepisController extends AbstractController
 
            // $przepisy->getSkladnik($skladniki->getPrzepisy());
              $repository->save($przepis);
+                 $this->addFlash('success', 'Przepis dodany');
 
-            return $this->redirectToRoute('skladniki_new',['idPrzep'=>$przepis->getId()]);
+            return $this->redirectToRoute('stronaglowna_index');
         }
 
        return $this->render(

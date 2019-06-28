@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Użytkownicy</h1>
+    <h1>Przepisy według kategorii</h1>
     {% if pagination is defined and pagination|length %}
 
         <div class="navigation text-center">
@@ -15,19 +15,19 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>{{ knp_pagination_sortable(pagination, 'E-mail'|trans, 't.tresc') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'tytuł'|trans, 't.tresc') }}</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             {% for dane in pagination %}
                 <tr>
-                    <td>{{ dane.email }}</td>
+                    <td>{{ dane.tytul }}</td>
 
                     <td>
-                        <a href="{{ path('user_delete', {id: dane.id}) }}" title="{{ 'deleteUser'|trans }}">Usuń użytkownika</a>
-                        <a href="{{ path('add_admin', {id: dane.id}) }}" title="{{ 'addAdmin'|trans }}">Mianuj adminem</a>
-
+                        <a href="{{ url('przepis_view', {id: dane.id}) }}" title="{{ 'see_more'|trans }}">
+                           Zobacz więcej
+                        </a>
                     </td>
                 </tr>
             {% endfor %}
@@ -40,7 +40,7 @@
 
     {% else %}
         <p>
-            {{ 'message.empty_list'|trans }}
+            Nie znaleziono przepisu
         </p>
     {% endif %}
 

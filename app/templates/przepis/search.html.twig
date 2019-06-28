@@ -1,47 +1,17 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title.dane_list'|trans }}
+    {{ 'title.przepis_delete'|trans({'%id%': przepis.id|default('')}) }}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.dane_list'|trans }}</h1>
-    {% if pagination is defined and pagination|length %}
+    <div class="container">
+    {{ form_start(form, { method: 'POST', action: url('przepis_search') }) }}
+    {{ form_widget(form) }}
 
-        <div class="navigation text-center">
-            {{ knp_pagination_render(pagination) }}
-        </div>
+        <input type="submit" value="Szukaj" class="btn btn-primary" />
 
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>{{ knp_pagination_sortable(pagination, 'przepis'|trans, 't.tresc') }}</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for dane in pagination %}
-                <tr>
-                    <td>{{ dane.tytul }}</td>
 
-                    <td>
-                        <a href="{{ url('przepis_view', {id: dane.id}) }}" title="{{ 'see_more'|trans }}">
-                            {{ 'see_more'|trans }}
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
-        <div class="navigation text-center">
-            {{ knp_pagination_render(pagination) }}
-        </div>
-
-    {% else %}
-        <p>
-            {{ 'message.empty_list'|trans }}
-        </p>
-    {% endif %}
-
+    {{ form_end(form) }}
+    </div>
 {% endblock %}
